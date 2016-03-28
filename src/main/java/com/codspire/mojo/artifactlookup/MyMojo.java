@@ -1,4 +1,4 @@
-package com.codspire;
+package com.codspire.mojo.artifactlookup;
 
 /*
  * Copyright 2001-2005 The Apache Software Foundation.
@@ -18,8 +18,6 @@ package com.codspire;
 
 //http://central.sonatype.org/pages/consumers.html
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,13 +32,26 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.settings.Settings;
 
-import com.maven.plugin.LookupForDependency;
-
 /**
  * Goal which touches a timestamp file.
  *
  */
+// blogpost
+// linkedin blog
+// license
+// logging debug/info
+// unit/integration tests
+// code quality and ci
 // http://central.sonatype.org/pages/consumers.html
+// TODO: plug-in help
+// why plug-in? Native maven support, used effective setting to search the
+// artifacts, place nicely
+// md5 feature
+// if you are moving from ant to maven, chances are that you are using some form
+// of local artifacts
+// even if you are using maven but manually installing the artifacts to .m2, you
+// may have the same problem
+
 @Mojo(requiresProject = false, name = "touch", defaultPhase = LifecyclePhase.NONE)
 public class MyMojo extends AbstractMojo {
 
@@ -78,18 +89,21 @@ public class MyMojo extends AbstractMojo {
 		// System.out.println(settings);
 		System.out.println(remoteArtifactRepositories);
 
-/*		for (ArtifactRepository artifactRepository : remoteArtifactRepositories) {
-			System.out.println(artifactRepository.getUrl());
-
-			lookupForDependency.process(artifactRepository.getUrl(), artifactLocation);
-		}*/
+		/*
+		 * for (ArtifactRepository artifactRepository :
+		 * remoteArtifactRepositories) {
+		 * System.out.println(artifactRepository.getUrl());
+		 * 
+		 * lookupForDependency.process(artifactRepository.getUrl(),
+		 * artifactLocation); }
+		 */
 		// System.out.println(localRepository);
 
 		LookupForDependency lookupForDependency = new LookupForDependency(artifactLocation, remoteArtifactRepositoriesURL);
 		lookupForDependency.process();
-		
+
 		// getLog().info(settings.toString());
-		
+
 	}
 
 	protected void validateArtifactLocation() {
@@ -123,29 +137,29 @@ public class MyMojo extends AbstractMojo {
 			e1.printStackTrace();
 		}
 
-		File f = outputDirectory;
-
-		if (!f.exists()) {
-			f.mkdirs();
-		}
-
-		File touch = new File(f, "touch.txt");
-
-		FileWriter w = null;
-		try {
-			w = new FileWriter(touch);
-
-			w.write("touch.txt");
-		} catch (IOException e) {
-			throw new MojoExecutionException("Error creating file " + touch, e);
-		} finally {
-			if (w != null) {
-				try {
-					w.close();
-				} catch (IOException e) {
-					// ignore
-				}
-			}
-		}
+		// File f = outputDirectory;
+		//
+		// if (!f.exists()) {
+		// f.mkdirs();
+		// }
+		//
+		// File touch = new File(f, "touch.txt");
+		//
+		// FileWriter w = null;
+		// try {
+		// w = new FileWriter(touch);
+		//
+		// w.write("touch.txt");
+		// } catch (IOException e) {
+		// throw new MojoExecutionException("Error creating file " + touch, e);
+		// } finally {
+		// if (w != null) {
+		// try {
+		// w.close();
+		// } catch (IOException e) {
+		// // ignore
+		// }
+		// }
+		// }
 	}
 }
