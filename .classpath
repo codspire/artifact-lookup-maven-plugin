@@ -22,6 +22,7 @@
   <classpathentry kind="var" path="M2_REPO/org/apache/maven/plugin-tools/maven-plugin-annotations/3.4/maven-plugin-annotations-3.4.jar" sourcepath="M2_REPO/org/apache/maven/plugin-tools/maven-plugin-annotations/3.4/maven-plugin-annotations-3.4-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/junit/junit/4.12/junit-4.12.jar" sourcepath="M2_REPO/junit/junit/4.12/junit-4.12-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar" sourcepath="M2_REPO/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-collections/commons-collections/3.2.2/commons-collections-3.2.2.jar" sourcepath="M2_REPO/commons-collections/commons-collections/3.2.2/commons-collections-3.2.2-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/maven/maven-core/3.3.9/maven-core-3.3.9.jar" sourcepath="M2_REPO/org/apache/maven/maven-core/3.3.9/maven-core-3.3.9-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/maven/maven-settings/3.3.9/maven-settings-3.3.9.jar" sourcepath="M2_REPO/org/apache/maven/maven-settings/3.3.9/maven-settings-3.3.9-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/maven/maven-settings-builder/3.3.9/maven-settings-builder-3.3.9.jar" sourcepath="M2_REPO/org/apache/maven/maven-settings-builder/3.3.9/maven-settings-builder-3.3.9-sources.jar"/>

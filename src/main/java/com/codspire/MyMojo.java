@@ -20,8 +20,11 @@ package com.codspire;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -36,9 +39,8 @@ import com.maven.plugin.LookupForDependency;
 /**
  * Goal which touches a timestamp file.
  *
- * @deprecated Don't use!
  */
-//http://central.sonatype.org/pages/consumers.html
+// http://central.sonatype.org/pages/consumers.html
 @Mojo(requiresProject = false, name = "touch", defaultPhase = LifecyclePhase.NONE)
 public class MyMojo extends AbstractMojo {
 
@@ -62,25 +64,56 @@ public class MyMojo extends AbstractMojo {
 
 	private void getSettings() throws Exception {
 
+		validateRemoteArtifactRepositories();
+		validateArtifactLocation();
+
+		List<String> remoteArtifactRepositoriesURL = getRemoteArtifactRepositoriesURL(remoteArtifactRepositories);
+
 		System.out.println("artifactLocation=" + artifactLocation.getAbsolutePath());
 		System.out.println(artifactLocation.isFile());
-		LookupForDependency lookupForDependency = new LookupForDependency();
-		
 
 		// DefaultMavenSettingsBuilder defaultMavenSettingsBuilder = new
 		// DefaultMavenSettingsBuilder();
 		// Settings settings = defaultMavenSettingsBuilder.buildSettings();
 		// System.out.println(settings);
 		System.out.println(remoteArtifactRepositories);
-		
-		for (ArtifactRepository artifactRepository : remoteArtifactRepositories) {
+
+/*		for (ArtifactRepository artifactRepository : remoteArtifactRepositories) {
 			System.out.println(artifactRepository.getUrl());
-			
-			lookupForDependency.process(artifactRepository.getUrl(), artifactLocation);			
-		}
+
+			lookupForDependency.process(artifactRepository.getUrl(), artifactLocation);
+		}*/
 		// System.out.println(localRepository);
 
+		LookupForDependency lookupForDependency = new LookupForDependency(artifactLocation, remoteArtifactRepositoriesURL);
+		lookupForDependency.process();
+		
 		// getLog().info(settings.toString());
+		
+	}
+
+	protected void validateArtifactLocation() {
+
+		if (!artifactLocation.exists()) {
+			throw new ContextedRuntimeException("ERROR: artifactLocation property is invalid. Please provide -DartifactLocation=<file or folder path>");
+		}
+
+	}
+
+	protected void validateRemoteArtifactRepositories() {
+		if (CollectionUtils.isEmpty(remoteArtifactRepositories)) {
+			throw new ContextedRuntimeException("ERROR: No remote repository found, please check your settings.xml file");
+		}
+	}
+
+	protected List<String> getRemoteArtifactRepositoriesURL(List<ArtifactRepository> remoteArtifactRepositories) {
+		List<String> remoteArtifactRepositoriesURLList = new ArrayList<String>(remoteArtifactRepositories.size());
+
+		for (ArtifactRepository artifactRepository : remoteArtifactRepositories) {
+			remoteArtifactRepositoriesURLList.add(artifactRepository.getUrl());
+		}
+
+		return remoteArtifactRepositoriesURLList;
 	}
 
 	public void execute() throws MojoExecutionException {
