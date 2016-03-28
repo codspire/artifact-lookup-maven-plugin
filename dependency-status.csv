@@ -1,0 +1,4 @@
+File,Status,GroupId,ArtifactId,Version
+c:\temp\dependency\commons-codec-1.10.jar,Found,commons-codec,commons-codec,1.10
+c:\temp\dependency\commons-io-2.4.jar,Found,commons-io,commons-io,2.4
+c:\temp\dependency\javassist-3.18.0-20140807.233330-1.jar,Not Found,,,
