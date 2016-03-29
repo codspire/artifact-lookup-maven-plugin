@@ -16,7 +16,6 @@ package com.codspire.mojo.artifactlookup;
  * limitations under the License.
  */
 
-//http://central.sonatype.org/pages/consumers.html
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +35,7 @@ import org.apache.maven.settings.Settings;
  * Goal which touches a timestamp file.
  *
  */
+// http://central.sonatype.org/pages/consumers.html
 // blogpost
 // linkedin blog
 // license
@@ -44,7 +44,9 @@ import org.apache.maven.settings.Settings;
 // code quality and ci
 // http://central.sonatype.org/pages/consumers.html
 // TODO: plug-in help
-// why plug-in? Native maven support, used effective setting to search the
+// why plug-in? Native maven support, used effective setting to search the, yes
+// we can create a simple script but i wanted something that is maven native,
+// platform independent (bat, sh)
 // artifacts, place nicely
 // md5 feature
 // if you are moving from ant to maven, chances are that you are using some form
@@ -68,9 +70,9 @@ public class MyMojo extends AbstractMojo {
 	protected File artifactLocation;
 
 	/**
-	 * Location of the file.
+	 * Location of the output files.
 	 */
-	@Parameter(defaultValue = "${project.build.directory}", property = "outputDir", required = true)
+	@Parameter(defaultValue = ".", property = "outputDir", required = true)
 	private File outputDirectory;
 
 	private void getSettings() throws Exception {
@@ -99,7 +101,7 @@ public class MyMojo extends AbstractMojo {
 		 */
 		// System.out.println(localRepository);
 
-		LookupForDependency lookupForDependency = new LookupForDependency(artifactLocation, remoteArtifactRepositoriesURL);
+		LookupForDependency lookupForDependency = new LookupForDependency(artifactLocation, remoteArtifactRepositoriesURL, outputDirectory);
 		lookupForDependency.process();
 
 		// getLog().info(settings.toString());

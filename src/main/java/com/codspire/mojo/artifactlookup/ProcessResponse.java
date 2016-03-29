@@ -10,6 +10,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.apache.http.HttpEntity;
@@ -28,16 +29,22 @@ import com.codspire.mojo.model.GAV;
 //http://choosealicense.com/
 
 public class ProcessResponse {
+	private static final String SONATYPE_GROUP_ID_XPATH = "sonatype.group.id.xpath";
+	private static final String SONATYPE_ARTIFACT_ID_XPATH = "sonatype.artifact.id.xpath";
+	private static final String SONATYPE_VERSION_XPATH = "sonatype.version.xpath";
+	private static final String SONATYPE_REPO_URL_ENDS_WITH = "sonatype.repo.url.ends.with";
+	private static final String SONATYPE_REPO_SEARCH_ENDPOINT_ENDS_WITH = "sonatype.repo.search.endpoint.ends.with";
+	private static final String MAVEN_CENTRAL_REPO_DOMAIN_1 = "maven.central.repo.domain.1";
+	private static final String MAVEN_CENTRAL_REPO_DOMAIN_2 = "maven.central.repo.domain.2";
+	private static final String MAVEN_CENTRAL_REPO_SEARCH_ENDPOINT = "maven.central.repo.search.endpoint";
 
 	private String apiEndpoint;
+	private static final String SEARCH_MAVEN_GAV_XPATH = "search.maven.gav.xpath";
 
-	private static final String SONATYPE_GROUP_ID_XPATH = "/searchNGResponse/data/artifact/groupId";
-	private static final String SONATYPE_ARTIFACT_ID_XPATH = "/searchNGResponse/data/artifact/artifactId";
-	private static final String SONATYPE_VERSION_XPATH = "/searchNGResponse/data/artifact/version";
+	private PropertiesConfiguration plugInConfig;
 
-	private static final String SEARCH_MAVEN_GAV_XPATH = "/response/result/doc/str[@name='id']";
-
-	public ProcessResponse(String repository) {
+	public ProcessResponse(String repository, PropertiesConfiguration plugInConfig) {
+		this.plugInConfig = plugInConfig;
 		this.apiEndpoint = getAPIEndpoint(repository);
 	}
 
@@ -48,10 +55,10 @@ public class ProcessResponse {
 		String endpoint = null;
 		repository = cleanupRepositoryURL(repository);
 
-		if (repository.contains("repo.maven.apache.org") || repository.contains("repo1.maven.org")) {
-			endpoint = "https://search.maven.org/solrsearch/select?wt=xml&q=1:";
-		} else if (repository.endsWith("/content/groups/public")) {
-			endpoint = repository.replace("/content/groups/public", "/service/local/lucene/search?sha1=");
+		if (repository.contains(plugInConfig.getString(MAVEN_CENTRAL_REPO_DOMAIN_1)) || repository.contains(plugInConfig.getString(MAVEN_CENTRAL_REPO_DOMAIN_2))) {
+			endpoint = plugInConfig.getString(MAVEN_CENTRAL_REPO_SEARCH_ENDPOINT);
+		} else if (repository.endsWith(plugInConfig.getString(SONATYPE_REPO_URL_ENDS_WITH))) {
+			endpoint = repository.replace(plugInConfig.getString(SONATYPE_REPO_URL_ENDS_WITH), plugInConfig.getString(SONATYPE_REPO_SEARCH_ENDPOINT_ENDS_WITH));
 		} else {
 			throw new ContextedRuntimeException("Endpoint could not be determined for " + repository);
 		}
@@ -68,29 +75,31 @@ public class ProcessResponse {
 		return repository;
 	}
 
-	private String getAPIEndpointOld(String repository) {
-		String endpoint = null;
-		if (repository.toLowerCase().contains("search.maven.org")) {
-			endpoint = "http://search.maven.org/solrsearch/select?wt=xml&q=1:";
-		} else if (repository.toLowerCase().contains("oss.sonatype.org")) {
-			endpoint = "https://oss.sonatype.org/service/local/lucene/search?sha1=";
-		} else {
-			endpoint = repository + "/service/local/lucene/search?sha1=";
-		}
-		return endpoint;
-	}
+	// private String getAPIEndpointOld(String repository) {
+	// String endpoint = null;
+	// if (repository.toLowerCase().contains("search.maven.org")) {
+	// endpoint = "http://search.maven.org/solrsearch/select?wt=xml&q=1:";
+	// } else if (repository.toLowerCase().contains("oss.sonatype.org")) {
+	// endpoint = "https://oss.sonatype.org/service/local/lucene/search?sha1=";
+	// } else {
+	// endpoint = repository + "/service/local/lucene/search?sha1=";
+	// }
+	// return endpoint;
+	// }
 
-	public static void main(String[] args) {
-		// ProcessResponse processResponse = new
-		// ProcessResponse("https://oss.sonatype.org");
-		ProcessResponse processResponse = new ProcessResponse("http://search.maven.org");
-		try {
-			GAV gav = processResponse.lookupRepo("031c70abf97936b5aca0c31c86672b209e1091d8");
-			System.out.println(gav.getGAVXML());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	// public static void main(String[] args) {
+	// // ProcessResponse processResponse = new
+	// // ProcessResponse("https://oss.sonatype.org");
+	// ProcessResponse processResponse = new
+	// ProcessResponse("http://search.maven.org");
+	// try {
+	// GAV gav =
+	// processResponse.lookupRepo("031c70abf97936b5aca0c31c86672b209e1091d8");
+	// System.out.println(gav.getGAVXML());
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// }
 
 	public GAV lookupRepo(String sha1Checksum) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -102,7 +111,6 @@ public class ProcessResponse {
 
 			ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
 
-				// @Override
 				public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
 					int status = response.getStatusLine().getStatusCode();
 					if (status >= 200 && status < 300) {
@@ -132,7 +140,6 @@ public class ProcessResponse {
 				throw new ContextedRuntimeException("No GAV found for " + sha1Checksum);
 			}
 
-			// gav.setSha1(sha1Checksum);
 			return gav;
 		} finally {
 			try {
@@ -142,7 +149,7 @@ public class ProcessResponse {
 		}
 	}
 
-	public static GAV getGAV(String xml) {
+	public GAV getGAV(String xml) {
 		GAV gav = null;
 		try {
 
@@ -152,17 +159,17 @@ public class ProcessResponse {
 			XPathFactory xPathfactory = XPathFactory.newInstance();
 			String groupId, artifactId, version;
 
-			groupId = getXpathValue(document, xPathfactory, SONATYPE_GROUP_ID_XPATH);
+			groupId = getXpathValue(document, xPathfactory, plugInConfig.getString(SONATYPE_GROUP_ID_XPATH));
 
 			if (StringUtils.isNotBlank(groupId)) {
 
-				artifactId = getXpathValue(document, xPathfactory, SONATYPE_ARTIFACT_ID_XPATH);
-				version = getXpathValue(document, xPathfactory, SONATYPE_VERSION_XPATH);
+				artifactId = getXpathValue(document, xPathfactory, plugInConfig.getString(SONATYPE_ARTIFACT_ID_XPATH));
+				version = getXpathValue(document, xPathfactory, plugInConfig.getString(SONATYPE_VERSION_XPATH));
 
 				gav = new GAV(groupId, artifactId, version);
 			} else {
 
-				String[] gavArray = getXpathValue(document, xPathfactory, SEARCH_MAVEN_GAV_XPATH).split(":");
+				String[] gavArray = getXpathValue(document, xPathfactory, plugInConfig.getString(SEARCH_MAVEN_GAV_XPATH)).split(":");
 				if (gavArray.length >= 3) {
 
 					gav = new GAV(gavArray[0], gavArray[1], gavArray[2]);

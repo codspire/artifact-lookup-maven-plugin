@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class ProcessingStatus {
 	private File artifact;
@@ -74,13 +75,13 @@ public class ProcessingStatus {
 		this.sha1 = sha1;
 	}
 
-	public ProcessingStatus(File artifact, GAV gav, boolean isError, String statusMessage) {
-		super();
-		this.artifact = artifact;
-		this.gav = gav;
-		this.isError = isError;
-		this.statusMessage = statusMessage;
-	}
+//	public ProcessingStatus(File artifact, GAV gav, boolean isError, String statusMessage) {
+//		super();
+//		this.artifact = artifact;
+//		this.gav = gav;
+//		this.isError = isError;
+//		this.statusMessage = statusMessage;
+//	}
 
 	@Override
 	public int hashCode() {
@@ -95,5 +96,11 @@ public class ProcessingStatus {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("artifact", artifact).append("artifactRepository", artifactRepository).append("gav", gav).append("isError", isError).append("sha1", sha1)
+				.append("statusMessage", statusMessage).toString();
 	}
 }

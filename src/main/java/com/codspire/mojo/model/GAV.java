@@ -1,14 +1,13 @@
 package com.codspire.mojo.model;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class GAV {
 
 	private String groupId;
 	private String artifactId;
 	private String version;
-
-	// private String sha1;
 
 	public String getGroupId() {
 		return groupId;
@@ -62,11 +61,8 @@ public class GAV {
 		return stringBuilder.toString();
 	}
 
-	// public String getSha1() {
-	// return sha1;
-	// }
-	//
-	// public void setSha1(String sha1) {
-	// this.sha1 = sha1;
-	// }
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("groupId", groupId).append("artifactId", artifactId).append("version", version).toString();
+	}
 }
