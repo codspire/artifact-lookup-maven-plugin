@@ -10,6 +10,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
+import org.apache.maven.plugin.logging.Log;
 
 import com.codspire.mojo.model.GAV;
 import com.codspire.mojo.model.ProcessingStatus;
@@ -27,8 +28,6 @@ import com.codspire.mojo.utils.FileChecksum;
 //TODO: traverci, git
 
 public class LookupForDependency {
-	// private static final String DEFAULT_LOOKUP_REPO =
-	// "https://oss.sonatype.org/content/groups/public/";
 	private static final String DEFAULT_DEPENDENCY_FILENAME = "default.dependency.filename";
 	private static final String DEFAULT_LOOKUP_STATUS_FILENAME = "default.lookup.status.filename";
 	private static final String ARTIFACT_FILE_EXTENSIONS = "artifact.file.extensions";
@@ -38,8 +37,9 @@ public class LookupForDependency {
 	private List<String> remoteArtifactRepositoriesURL;
 	private PropertiesConfiguration plugInConfig = null;
 	private File outputDirectory;
+	private Log log;
 
-	public LookupForDependency(File artifactLocation, List<String> remoteArtifactRepositoriesURL, File outputDirectory) {
+	public LookupForDependency(File artifactLocation, List<String> remoteArtifactRepositoriesURL, File outputDirectory, Log log) {
 
 		try {
 			this.plugInConfig = new PropertiesConfiguration("plugin-config.properties");
@@ -52,6 +52,7 @@ public class LookupForDependency {
 		this.remoteArtifactRepositoriesURL = remoteArtifactRepositoriesURL;
 		this.notFoundList = loadArtifacts(artifactLocation);
 		this.foundList = new ArrayList<ProcessingStatus>();
+		this.log = log;
 	}
 
 	private List<ProcessingStatus> loadArtifacts(File fileOrFolder) {
@@ -70,166 +71,20 @@ public class LookupForDependency {
 		return artifactsDetails;
 	}
 
-	// public LookupForDependency() {
-	// }
-
-	// public static void main(String[] args) {
-	//
-	// if (args != null && args.length > 0) {
-	// String path = args[0];
-	// String lookupRepo = null;
-	//
-	// File fileOrFolder = new File(path);
-	// String[] files;
-	//
-	// if (fileOrFolder.isFile()) {
-	// files = new String[] { fileOrFolder.getAbsolutePath() };
-	// } else {
-	//
-	// Iterator<File> filesList = FileUtils.iterateFiles(fileOrFolder, new
-	// String[] { "jar", "JAR", "zip", "ZIP" }, true);
-	//
-	// files = getFilePaths(filesList);
-	// }
-	//
-	// if (args.length > 1) {
-	// lookupRepo = args[1];
-	// }
-	//
-	// LookupForDependency lookupForDependency = new LookupForDependency();
-	//
-	// lookupForDependency.process(lookupRepo, files);
-	// }
-	// }
-
-	// public void process(String lookupRepo, File artifactLocation) {
-	// String[] files;
-	//
-	// if (artifactLocation.isFile()) {
-	// files = new String[] { artifactLocation.getAbsolutePath() };
-	// } else {
-	// Iterator<File> filesList = FileUtils.iterateFiles(artifactLocation, new
-	// String[] { "jar", "JAR", "zip", "ZIP" }, true);
-	// files = getFilePaths(filesList);
-	// }
-	//
-	// process(lookupRepo, files);
-	// }
-
-	// private static String[] getFilePaths(Iterator<File> filesList) {
-	// List<String> filesPath = new ArrayList<String>();
-	//
-	// while (filesList.hasNext()) {
-	// filesPath.add(filesList.next().getAbsolutePath());
-	// }
-	// return filesPath.toArray(new String[0]);
-	// }
-
-	// private List<ProcessingStatus> process(String lookupRepo, String... jars)
-	// {
-	// String finalLookupRepo = StringUtils.isNotBlank(lookupRepo) ? lookupRepo
-	// : DEFAULT_LOOKUP_REPO;
-	// FileChecksum fileChecksum = new FileChecksum();
-	// List<ProcessingStatus> processingStatusList = new
-	// ArrayList<ProcessingStatus>();
-	//
-	// ProcessResponse processResponse = new ProcessResponse(finalLookupRepo);
-	//
-	// System.out.println("Using Repo: " + finalLookupRepo);
-	//
-	// String sha1;
-	//
-	// ProcessingStatus processingStatus = null;
-	//
-	// for (String jar : jars) {
-	// try {
-	// processingStatus = new ProcessingStatus();
-	// // processingStatus.setFilePath(jar);
-	//
-	// sha1 = fileChecksum.generateSHA1ChecksumV2(jar);
-	// GAV gav = processResponse.lookupRepo(sha1);
-	//
-	// processingStatus.setGav(gav);
-	// processingStatus.markSuccess();
-	// processingStatus.setStatusMessage("Success");
-	// processingStatus.setArtifactRepository(lookupRepo);
-	//
-	// } catch (Exception e) {
-	// processingStatus.markError();
-	// processingStatus.setStatusMessage("ERROR: " + jar +
-	// " could not be resolved. " + e.getMessage());
-	// System.err.println(processingStatus.getStatusMessage());
-	// }
-	//
-	// processingStatusList.add(processingStatus);
-	// }
-	//
-	// writeToFile(processingStatusList);
-	//
-	// return processingStatusList;
-	// }
-
-	// private void writeToFile(List<ProcessingStatus> processingStatusList) {
-	// StringBuilder dependencyPom = new StringBuilder();
-	// StringBuilder statusCSV = new StringBuilder();
-	//
-	// dependencyPom.append("\n<dependencies>\n");
-	// statusCSV.append("File,Status,GroupId,ArtifactId,Version\n");
-	//
-	// for (ProcessingStatus processingStatus : processingStatusList) {
-	//
-	// GAV gav = processingStatus.getGav();
-	//
-	// if (!processingStatus.isError() && gav != null) {
-	// dependencyPom.append("<!-- Resolved from " +
-	// processingStatus.getArtifactRepository() + "-->\n");
-	// dependencyPom.append(gav.getGAVXML());
-	//
-	// statusCSV.append(processingStatus.getArtifact().getAbsolutePath() + "," +
-	// (processingStatus.isError() ? "Not Found" : "Found") + "," +
-	// gav.getGroupId() + "," + gav.getArtifactId()
-	// + "," + gav.getVersion() + "\n");
-	// } else {
-	// statusCSV.append(processingStatus.getArtifact().getAbsolutePath() + "," +
-	// (processingStatus.isError() ? "Not Found" : "Found") + ",,," + "\n");
-	// }
-	// }
-	//
-	// dependencyPom.append("</dependencies>\n");
-	//
-	// writeToFile(dependencyPom, outputDirectory + File.separator +
-	// plugInConfig.getString(DEFAULT_DEPENDENCY_FILENAME));
-	// writeToFile(statusCSV, outputDirectory + File.separator +
-	// plugInConfig.getString(DEFAULT_LOOKUP_STATUS_FILENAME));
-	// }
-
-	private void writeToFile(StringBuilder stringBuilder, String fileName) {
-		try {
-			File outputFile = new File(fileName);
-			FileUtils.write(outputFile, stringBuilder.toString());
-			System.out.println("\nCreated dependencies file at: " + outputFile.getAbsolutePath());
-
-			System.out.println(stringBuilder.toString());
-
-		} catch (Exception e) {
-			System.err.println("ERROR: Could not create " + fileName);
-		}
-	}
-
 	public synchronized void process() {
 		for (String artifactRepository : remoteArtifactRepositoriesURL) {
 
 			if (CollectionUtils.isNotEmpty(this.notFoundList)) {
-				System.out.println("*********** Checking against ==> " + artifactRepository);
+				log.info("*********** Checking against ==> " + artifactRepository);
 
 				List<ProcessingStatus> tempNotFoundList = new ArrayList<ProcessingStatus>();
 				tempNotFoundList.addAll(this.notFoundList);
 
 				for (ProcessingStatus processingStatus : tempNotFoundList) {
 					try {
-						System.out.println("Looking up " + processingStatus.getArtifact().getAbsolutePath());
+						log.info("Looking up " + processingStatus.getArtifact().getAbsolutePath());
 						// TODO: can ProcessResponse be reused?
-						ProcessResponse processResponse = new ProcessResponse(artifactRepository, plugInConfig);
+						ProcessResponse processResponse = new ProcessResponse(artifactRepository, plugInConfig, log);
 						GAV gav = processResponse.lookupRepo(processingStatus.getSha1());
 
 						processingStatus.setGav(gav);
@@ -246,8 +101,8 @@ public class LookupForDependency {
 						System.err.println(processingStatus.getStatusMessage());
 					}
 
-					System.out.println("notFoundList size = " + this.notFoundList.size());
-					System.out.println("FoundList size = " + this.foundList.size());
+					log.info("Not Found Count = " + this.notFoundList.size());
+					log.info("Found Count = " + this.foundList.size());
 				}
 			}
 		}
@@ -273,6 +128,11 @@ public class LookupForDependency {
 
 		dependencyPom.append("</dependencies>\n");
 
+		log.info("------------------------------------------------------------------------");
+		log.info("DEPENDENCIES");
+		log.info("------------------------------------------------------------------------");
+		log.info(dependencyPom.toString());
+		log.info("------------------------------------------------------------------------");
 		writeToFile(dependencyPom, outputDirectory + File.separator + plugInConfig.getString(DEFAULT_DEPENDENCY_FILENAME));
 	}
 
@@ -297,6 +157,21 @@ public class LookupForDependency {
 				statusCSV.append(processingStatus.getArtifact().getAbsolutePath() + "," + processingStatus.getSha1() + "," + (processingStatus.isError() ? "Not Found" : "Found") + ",,,," + "\n");
 			}
 		}
+
+		if (log.isDebugEnabled()) {
+			log.debug(statusCSV.toString());
+		}
+
 		writeToFile(statusCSV, outputDirectory + File.separator + plugInConfig.getString(DEFAULT_LOOKUP_STATUS_FILENAME));
+	}
+
+	private void writeToFile(StringBuilder stringBuilder, String fileName) {
+		try {
+			File outputFile = new File(fileName);
+			FileUtils.write(outputFile, stringBuilder.toString());
+			log.info("\nCreated dependencies file at: " + outputFile.getAbsolutePath());
+		} catch (Exception e) {
+			log.error("ERROR: Could not create " + fileName, e);
+		}
 	}
 }

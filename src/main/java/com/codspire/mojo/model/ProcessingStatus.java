@@ -75,14 +75,6 @@ public class ProcessingStatus {
 		this.sha1 = sha1;
 	}
 
-//	public ProcessingStatus(File artifact, GAV gav, boolean isError, String statusMessage) {
-//		super();
-//		this.artifact = artifact;
-//		this.gav = gav;
-//		this.isError = isError;
-//		this.statusMessage = statusMessage;
-//	}
-
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder().append(artifact).append(sha1).toHashCode();

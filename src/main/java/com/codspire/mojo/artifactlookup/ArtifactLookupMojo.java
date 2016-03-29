@@ -25,15 +25,15 @@ import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.settings.Settings;
 
 /**
- * Goal which touches a timestamp file.
- *
+ * Goal which touches a timestamp file. mvn clean install;mvn
+ * com.codspire.plugin:artifact-lookup-maven-plugin:lookup
+ * -DartifactLocation=c:\\temp\\dependency
  */
 // http://central.sonatype.org/pages/consumers.html
 // blogpost
@@ -53,18 +53,19 @@ import org.apache.maven.settings.Settings;
 // of local artifacts
 // even if you are using maven but manually installing the artifacts to .m2, you
 // may have the same problem
+// http://choosealicense.com/
+@Mojo(requiresProject = false, name = "lookup", defaultPhase = LifecyclePhase.NONE)
+public class ArtifactLookupMojo extends AbstractMojo {
 
-@Mojo(requiresProject = false, name = "touch", defaultPhase = LifecyclePhase.NONE)
-public class MyMojo extends AbstractMojo {
-
-	@Component
-	private Settings settings;
+	// @Component
+	// private Settings settings;
 
 	@Parameter(readonly = true, required = true, defaultValue = "${project.remoteArtifactRepositories}")
 	protected List<ArtifactRepository> remoteArtifactRepositories;
 
-	@Parameter(readonly = true, required = true, defaultValue = "${localRepository}")
-	protected ArtifactRepository localRepository;
+	// @Parameter(readonly = true, required = true, defaultValue =
+	// "${localRepository}")
+	// protected ArtifactRepository localRepository;
 
 	@Parameter(readonly = true, required = true, property = "artifactLocation", defaultValue = "/c/temp/dependency")
 	protected File artifactLocation;
@@ -75,45 +76,36 @@ public class MyMojo extends AbstractMojo {
 	@Parameter(defaultValue = ".", property = "outputDir", required = true)
 	private File outputDirectory;
 
-	private void getSettings() throws Exception {
+	public void execute() throws MojoExecutionException {
+		try {
+			lookupArtifacts();
+		} catch (Exception e) {
+			getLog().error("Error executing the plugin", e);
+		}
+	}
 
+	private void lookupArtifacts() throws Exception {
+		Log log = getLog();
 		validateRemoteArtifactRepositories();
 		validateArtifactLocation();
 
 		List<String> remoteArtifactRepositoriesURL = getRemoteArtifactRepositoriesURL(remoteArtifactRepositories);
 
-		System.out.println("artifactLocation=" + artifactLocation.getAbsolutePath());
-		System.out.println(artifactLocation.isFile());
+		log.info(artifactLocation.getAbsolutePath() + "is file = " + artifactLocation.isFile());
 
-		// DefaultMavenSettingsBuilder defaultMavenSettingsBuilder = new
-		// DefaultMavenSettingsBuilder();
-		// Settings settings = defaultMavenSettingsBuilder.buildSettings();
-		// System.out.println(settings);
-		System.out.println(remoteArtifactRepositories);
+		if (log.isDebugEnabled()) {
+			log.debug("Remote Artifact Repositories");
+			log.debug(remoteArtifactRepositories.toString());
+		}
 
-		/*
-		 * for (ArtifactRepository artifactRepository :
-		 * remoteArtifactRepositories) {
-		 * System.out.println(artifactRepository.getUrl());
-		 * 
-		 * lookupForDependency.process(artifactRepository.getUrl(),
-		 * artifactLocation); }
-		 */
-		// System.out.println(localRepository);
-
-		LookupForDependency lookupForDependency = new LookupForDependency(artifactLocation, remoteArtifactRepositoriesURL, outputDirectory);
+		LookupForDependency lookupForDependency = new LookupForDependency(artifactLocation, remoteArtifactRepositoriesURL, outputDirectory, getLog());
 		lookupForDependency.process();
-
-		// getLog().info(settings.toString());
-
 	}
 
 	protected void validateArtifactLocation() {
-
 		if (!artifactLocation.exists()) {
 			throw new ContextedRuntimeException("ERROR: artifactLocation property is invalid. Please provide -DartifactLocation=<file or folder path>");
 		}
-
 	}
 
 	protected void validateRemoteArtifactRepositories() {
@@ -130,38 +122,5 @@ public class MyMojo extends AbstractMojo {
 		}
 
 		return remoteArtifactRepositoriesURLList;
-	}
-
-	public void execute() throws MojoExecutionException {
-		try {
-			getSettings();
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-
-		// File f = outputDirectory;
-		//
-		// if (!f.exists()) {
-		// f.mkdirs();
-		// }
-		//
-		// File touch = new File(f, "touch.txt");
-		//
-		// FileWriter w = null;
-		// try {
-		// w = new FileWriter(touch);
-		//
-		// w.write("touch.txt");
-		// } catch (IOException e) {
-		// throw new MojoExecutionException("Error creating file " + touch, e);
-		// } finally {
-		// if (w != null) {
-		// try {
-		// w.close();
-		// } catch (IOException e) {
-		// // ignore
-		// }
-		// }
-		// }
 	}
 }

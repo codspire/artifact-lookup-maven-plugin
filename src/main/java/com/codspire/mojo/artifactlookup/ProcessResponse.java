@@ -21,12 +21,11 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.apache.maven.plugin.logging.Log;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
 import com.codspire.mojo.model.GAV;
-
-//http://choosealicense.com/
 
 public class ProcessResponse {
 	private static final String SONATYPE_GROUP_ID_XPATH = "sonatype.group.id.xpath";
@@ -42,13 +41,15 @@ public class ProcessResponse {
 	private static final String SEARCH_MAVEN_GAV_XPATH = "search.maven.gav.xpath";
 
 	private PropertiesConfiguration plugInConfig;
-
-	public ProcessResponse(String repository, PropertiesConfiguration plugInConfig) {
-		this.plugInConfig = plugInConfig;
-		this.apiEndpoint = getAPIEndpoint(repository);
-	}
+	private Log log;
 
 	public ProcessResponse() {
+	}
+
+	public ProcessResponse(String repository, PropertiesConfiguration plugInConfig, Log log) {
+		this.plugInConfig = plugInConfig;
+		this.apiEndpoint = getAPIEndpoint(repository);
+		this.log = log;
 	}
 
 	private String getAPIEndpoint(String repository) {
@@ -75,38 +76,12 @@ public class ProcessResponse {
 		return repository;
 	}
 
-	// private String getAPIEndpointOld(String repository) {
-	// String endpoint = null;
-	// if (repository.toLowerCase().contains("search.maven.org")) {
-	// endpoint = "http://search.maven.org/solrsearch/select?wt=xml&q=1:";
-	// } else if (repository.toLowerCase().contains("oss.sonatype.org")) {
-	// endpoint = "https://oss.sonatype.org/service/local/lucene/search?sha1=";
-	// } else {
-	// endpoint = repository + "/service/local/lucene/search?sha1=";
-	// }
-	// return endpoint;
-	// }
-
-	// public static void main(String[] args) {
-	// // ProcessResponse processResponse = new
-	// // ProcessResponse("https://oss.sonatype.org");
-	// ProcessResponse processResponse = new
-	// ProcessResponse("http://search.maven.org");
-	// try {
-	// GAV gav =
-	// processResponse.lookupRepo("031c70abf97936b5aca0c31c86672b209e1091d8");
-	// System.out.println(gav.getGAVXML());
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// }
-	// }
-
 	public GAV lookupRepo(String sha1Checksum) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		try {
 
 			String url = apiEndpoint + sha1Checksum;
-			System.out.println("Request URL: " + url);
+			log.info("Request URL: " + url);
 			HttpGet httpGet = new HttpGet(url);
 
 			ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
@@ -128,8 +103,11 @@ public class ProcessResponse {
 			try {
 				responseBody = httpclient.execute(httpGet, responseHandler);
 
-				// System.out.println("----------------------------------------");
-				// System.out.println(responseBody);
+				if (log.isDebugEnabled()) {
+					log.debug("----------------------------------------");
+					log.debug(responseBody);
+					log.debug("----------------------------------------");
+				}
 
 				gav = getGAV(responseBody);
 			} catch (Exception e) {
@@ -177,19 +155,19 @@ public class ProcessResponse {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e);
 		}
 
 		return gav;
 	}
 
-	private static String getXpathValue(Document document, XPathFactory xPathfactory, String targetXpath) {
+	private String getXpathValue(Document document, XPathFactory xPathfactory, String targetXpath) {
 		XPath xpath = xPathfactory.newXPath();
 		String xpathValue = null;
 		try {
 			xpathValue = xpath.compile(targetXpath).evaluate(document, XPathConstants.STRING).toString();
 		} catch (XPathExpressionException e) {
-			e.printStackTrace();
+			log.error(e);
 		}
 		return xpathValue;
 	}
