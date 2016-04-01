@@ -58,7 +58,14 @@ import org.apache.maven.plugins.annotations.Parameter;
 // http://choosealicense.com/
 // publish to maven central or nexus oss site
 // site documentaton similar to maven dependency plugin
-//https://oss.sonatype.org/content/groups/public/
+// https://oss.sonatype.org/content/groups/public/
+// https://www.javacodegeeks.com/2015/04/there-is-a-mojo-in-my-dojo-how-to-write-a-maven-plugin.html
+// bucket of jars to nice clean dependencies (for external and internal
+// libraries)
+//copyright header
+//javadocs
+//plug-in docs
+//plug-in help
 @Mojo(requiresProject = false, name = "lookup", defaultPhase = LifecyclePhase.NONE)
 public class ArtifactLookupMojo extends AbstractMojo {
 
@@ -82,7 +89,7 @@ public class ArtifactLookupMojo extends AbstractMojo {
 	 * Location of the output files.
 	 */
 	@Parameter(defaultValue = ".", property = "outputDir", required = true)
-	private File outputDirectory;
+	protected File outputDirectory;
 
 	public void execute() throws MojoExecutionException {
 		try {
@@ -117,7 +124,7 @@ public class ArtifactLookupMojo extends AbstractMojo {
 	}
 
 	protected void validateRemoteArtifactRepositories() {
-		if (CollectionUtils.isEmpty(remoteArtifactRepositories)) {
+		if (StringUtils.isBlank(repositoryUrl) && CollectionUtils.isEmpty(remoteArtifactRepositories)) {
 			throw new ContextedRuntimeException("ERROR: No remote repository found, please check your settings.xml file");
 		}
 	}

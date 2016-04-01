@@ -6,10 +6,4 @@
 		<artifactId>formatter-java</artifactId>
 		<version>1.0.1</version>
 	</dependency>
-	<!-- Resolved from https://repo.maven.apache.org/maven2/ -->
-	<dependency>
-		<groupId>commons-io</groupId>
-		<artifactId>commons-io</artifactId>
-		<version>2.4</version>
-	</dependency>
 </dependencies>

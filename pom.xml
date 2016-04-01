@@ -23,6 +23,11 @@
 			<version>3.3.9</version>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-model</artifactId>
+			<version>3.3.9</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.maven.plugin-tools</groupId>
 			<artifactId>maven-plugin-annotations</artifactId>
 			<version>3.4</version>
@@ -43,6 +48,12 @@
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-all</artifactId>
 			<version>1.3</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.10.19</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -75,17 +86,30 @@
 			<artifactId>commons-codec</artifactId>
 			<version>1.10</version>
 		</dependency>
-		<!-- temp -->
+		<!-- <dependency> <groupId>org.apache.maven.plugin-testing</groupId> <artifactId>maven-plugin-testing-harness</artifactId> 
+			<version>3.3.0</version> <scope>test</scope> <exclusions> <exclusion> <groupId>junit</groupId> 
+			<artifactId>junit</artifactId> </exclusion> </exclusions> </dependency> -->
+		<!-- <dependency> <groupId>org.codehaus.plexus</groupId> <artifactId>plexus-container-default</artifactId> 
+			<version>1.6</version> </dependency> -->
+
 		<dependency>
 			<groupId>org.apache.maven</groupId>
-			<artifactId>maven-core</artifactId>
-			<version>3.3.9</version>
+			<artifactId>maven-compat</artifactId>
+			<version>3.0.5</version>
+			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-help-plugin</artifactId>
-			<version>2.2</version>
-		</dependency>
+
+		<!-- temp -->
+
+		<!-- <dependency> <groupId>org.apache.maven</groupId> <artifactId>maven-core</artifactId> 
+			<version>3.3.9</version> </dependency> <dependency> <groupId>org.apache.maven.plugins</groupId> 
+			<artifactId>maven-help-plugin</artifactId> <version>2.2</version> </dependency> 
+			<dependency> <groupId>org.eclipse.aether</groupId> <artifactId>aether-api</artifactId> 
+			<version>1.1.0</version> </dependency> <dependency> <groupId>org.eclipse.aether</groupId> 
+			<artifactId>aether-util</artifactId> <version>1.1.0</version> </dependency> 
+			<dependency> <groupId>org.eclipse.aether</groupId> <artifactId>aether-impl</artifactId> 
+			<version>1.1.0</version> </dependency> <dependency> <groupId>org.sonatype.aether</groupId> 
+			<artifactId>aether-api</artifactId> <version>1.13.1</version> </dependency> -->
 		<!-- <dependency> <groupId>com.maven.plugin</groupId> <artifactId>nexus-lookup</artifactId> 
 			<version>0.0.1-SNAPSHOT</version> </dependency> -->
 	</dependencies>

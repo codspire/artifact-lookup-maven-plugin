@@ -59,13 +59,13 @@ public class LookupForDependency {
 		List<ProcessingStatus> artifactsDetails = new ArrayList<ProcessingStatus>();
 
 		if (fileOrFolder.isFile()) {
-			artifactsDetails.add(new ProcessingStatus(fileOrFolder, FileChecksum.generateSHA1ChecksumV2(fileOrFolder)));
+			artifactsDetails.add(new ProcessingStatus(fileOrFolder, FileChecksum.generateSHA1Checksum(fileOrFolder)));
 		} else {
 			Iterator<File> iterateFiles = FileUtils.iterateFiles(fileOrFolder, plugInConfig.getStringArray(ARTIFACT_FILE_EXTENSIONS), true);
 
 			while (iterateFiles.hasNext()) {
 				File file = iterateFiles.next();
-				artifactsDetails.add(new ProcessingStatus(file, FileChecksum.generateSHA1ChecksumV2(file)));
+				artifactsDetails.add(new ProcessingStatus(file, FileChecksum.generateSHA1Checksum(file)));
 			}
 		}
 		return artifactsDetails;

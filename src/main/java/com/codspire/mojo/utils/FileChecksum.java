@@ -12,7 +12,7 @@ import org.apache.commons.io.IOUtils;
 //TODO: remove maven build warning
 public class FileChecksum {
 
-	public static String generateSHA1ChecksumV2(File file) {
+	public static String generateSHA1Checksum(File file) {
 		FileInputStream fis = null;
 		String sha1 = null;
 		try {
@@ -27,17 +27,14 @@ public class FileChecksum {
 	}
 }
 
-enum Hash {
-
-	MD5("MD5"), SHA1("SHA1"), SHA256("SHA-256"), SHA512("SHA-512");
-
-	private String name;
-
-	Hash(String name) {
-		this.name = name;
-	}
-
-	public String getName() {
-		return name;
-	}
-}
+/*
+ * enum Hash {
+ * 
+ * MD5("MD5"), SHA1("SHA1"), SHA256("SHA-256"), SHA512("SHA-512");
+ * 
+ * private String name;
+ * 
+ * Hash(String name) { this.name = name; }
+ * 
+ * public String getName() { return name; } }
+ */

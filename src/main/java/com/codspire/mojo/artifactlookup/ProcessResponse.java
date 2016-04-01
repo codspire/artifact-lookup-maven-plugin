@@ -52,7 +52,7 @@ public class ProcessResponse {
 		this.log = log;
 	}
 
-	private String getAPIEndpoint(String repository) {
+	String getAPIEndpoint(String repository) {
 		String endpoint = null;
 		repository = cleanupRepositoryURL(repository);
 
