@@ -5,6 +5,9 @@ import static org.hamcrest.Matchers.equalTo;
 
 import org.junit.Test;
 
+
+//mojo test example
+//https://github.com/spotify/docker-maven-plugin/blob/master/src/test/java/com/spotify/docker/BuildMojoTest.java
 public class ProcessResponseTest {
 
 	@Test

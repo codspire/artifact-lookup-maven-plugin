@@ -18,9 +18,11 @@ package com.codspire.mojo.artifactlookup;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.plugin.AbstractMojo;
@@ -54,6 +56,9 @@ import org.apache.maven.plugins.annotations.Parameter;
 // even if you are using maven but manually installing the artifacts to .m2, you
 // may have the same problem
 // http://choosealicense.com/
+// publish to maven central or nexus oss site
+// site documentaton similar to maven dependency plugin
+//https://oss.sonatype.org/content/groups/public/
 @Mojo(requiresProject = false, name = "lookup", defaultPhase = LifecyclePhase.NONE)
 public class ArtifactLookupMojo extends AbstractMojo {
 
@@ -69,6 +74,9 @@ public class ArtifactLookupMojo extends AbstractMojo {
 
 	@Parameter(readonly = true, required = true, property = "artifactLocation", defaultValue = "/c/temp/dependency")
 	protected File artifactLocation;
+
+	@Parameter(readonly = true, required = false, property = "repositoryUrl")
+	protected String repositoryUrl;
 
 	/**
 	 * Location of the output files.
@@ -115,12 +123,21 @@ public class ArtifactLookupMojo extends AbstractMojo {
 	}
 
 	protected List<String> getRemoteArtifactRepositoriesURL(List<ArtifactRepository> remoteArtifactRepositories) {
-		List<String> remoteArtifactRepositoriesURLList = new ArrayList<String>(remoteArtifactRepositories.size());
 
-		for (ArtifactRepository artifactRepository : remoteArtifactRepositories) {
-			remoteArtifactRepositoriesURLList.add(artifactRepository.getUrl());
+		List<String> remoteArtifactRepositoriesURLList = null;
+		// prefer repositoryUrl, it will superceed settings.xml
+
+		if (StringUtils.isNotBlank(repositoryUrl)) {
+			getLog().info("Using repository: " + repositoryUrl);
+			remoteArtifactRepositoriesURLList = Arrays.asList(repositoryUrl.split(","));
+		} else {
+
+			remoteArtifactRepositoriesURLList = new ArrayList<String>(remoteArtifactRepositories.size());
+
+			for (ArtifactRepository artifactRepository : remoteArtifactRepositories) {
+				remoteArtifactRepositoriesURLList.add(artifactRepository.getUrl());
+			}
 		}
-
 		return remoteArtifactRepositoriesURLList;
 	}
 }

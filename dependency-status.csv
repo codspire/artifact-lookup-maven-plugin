@@ -1,7 +1,7 @@
 File,SHA1,Status,GroupId,ArtifactId,Version,ArtifactRepository
-c:\temp\dependency\aismessages-2.2.1.jar,39810515158b677566745c505ecc0312605d9d65,Found,dk.tbsalling,aismessages,2.2.1,https://repository.jboss.org/nexus/content/groups/public/
-c:\temp\dependency\commons-codec-1.10.jar,4b95f4897fa13f2cd904aee711aeafc0c5295cd8,Found,commons-codec,commons-codec,1.10,https://repository.jboss.org/nexus/content/groups/public/
-c:\temp\dependency\commons-io-2.4.jar,b1b6ea3b7e4aa4f492509a4952029cd8e48019ad,Found,commons-io,commons-io,2.4,https://repository.jboss.org/nexus/content/groups/public/
-c:\temp\dependency\formatter-java-1.0.1.jar,fdbcf18a77ccf1e156412bca7cfeeca0ac7fc496,Found,cool.arch.infrastructure,formatter-java,1.0.1,https://repository.jboss.org/nexus/content/groups/public/
-c:\temp\dependency\javassist-3.18.0-20140807.233330-1.jar,cfe2cd0cc9febf75f3ff4c66e3b295d1b4d22caa,Found,ai.h2o,javassist,3.18.0-SNAPSHOT,https://repository.jboss.org/nexus/content/groups/public/
-c:\temp\dependency\ofc2struts2-1.0-SNAPSHOT.jar,9b2090109eaa93ce8bdb318c183ca01769fd5a0d,Found,binky.ofc2plugin,ofc2struts2,1.0-SNAPSHOT,https://repo.maven.apache.org/maven2/
+c:\temp\dependency\aismessages-2.2.1.jar,39810515158b677566745c505ecc0312605d9d65,Found,dk.tbsalling,aismessages,2.2.1,https://oss.sonatype.org/content/groups/public/
+c:\temp\dependency\formatter-java-1.0.1.jar,fdbcf18a77ccf1e156412bca7cfeeca0ac7fc496,Found,cool.arch.infrastructure,formatter-java,1.0.1,https://oss.sonatype.org/content/groups/public/
+c:\temp\dependency\javassist-3.18.0-20140807.233330-1.jar,cfe2cd0cc9febf75f3ff4c66e3b295d1b4d22caa,Found,ai.h2o,javassist,3.18.0-SNAPSHOT,https://oss.sonatype.org/content/groups/public/
+c:\temp\dependency\commons-codec-1.10.jar,4b95f4897fa13f2cd904aee711aeafc0c5295cd8,Found,commons-codec,commons-codec,1.10,https://repo1.maven.org/maven2/
+c:\temp\dependency\commons-io-2.4.jar,b1b6ea3b7e4aa4f492509a4952029cd8e48019ad,Found,commons-io,commons-io,2.4,https://repo1.maven.org/maven2/
+c:\temp\dependency\ofc2struts2-1.0-SNAPSHOT.jar,9b2090109eaa93ce8bdb318c183ca01769fd5a0d,Found,binky.ofc2plugin,ofc2struts2,1.0-SNAPSHOT,https://repo1.maven.org/maven2/
