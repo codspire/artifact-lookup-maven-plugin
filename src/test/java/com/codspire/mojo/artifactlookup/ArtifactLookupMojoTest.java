@@ -1,7 +1,11 @@
 package com.codspire.mojo.artifactlookup;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+//mojo test example
+//https://github.com/spotify/docker-maven-plugin/blob/master/src/test/java/com/spotify/docker/BuildMojoTest.java
+
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,11 +16,6 @@ import org.apache.maven.artifact.repository.MavenArtifactRepository;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-//mojo test example
-//https://github.com/spotify/docker-maven-plugin/blob/master/src/test/java/com/spotify/docker/BuildMojoTest.java
 
 //http://maven.apache.org/plugin-testing/maven-plugin-testing-harness/getting-started/index.html
 //http://stackoverflow.com/questions/15779351/component-lookup-exception-with-org-apache-maven-repository-repositorysystem-in
@@ -32,7 +31,7 @@ public class ArtifactLookupMojoTest {
 		plugInConfig = new PropertiesConfiguration("plugin-config.properties");
 	}
 
-	//@After
+	@After
 	public void cleanup() {
 
 		FileUtils.deleteQuietly(new File(OUTPUT_DIRECTORY.getAbsoluteFile() + File.separator + plugInConfig.getString("default.dependency.filename")));
