@@ -151,10 +151,10 @@ public class LookupForDependency {
 
 			if (!processingStatus.isError() && gav != null) {
 
-				statusCSV.append(processingStatus.getArtifact().getAbsolutePath() + "," + processingStatus.getSha1() + "," + (processingStatus.isError() ? "Not Found" : "Found") + ","
+				statusCSV.append(processingStatus.getArtifact().getPath() + "," + processingStatus.getSha1() + "," + (processingStatus.isError() ? "Not Found" : "Found") + ","
 						+ gav.getGroupId() + "," + gav.getArtifactId() + "," + gav.getVersion() + "," + processingStatus.getArtifactRepository() + "\n");
 			} else {
-				statusCSV.append(processingStatus.getArtifact().getAbsolutePath() + "," + processingStatus.getSha1() + "," + (processingStatus.isError() ? "Not Found" : "Found") + ",,,," + "\n");
+				statusCSV.append(processingStatus.getArtifact().getPath() + "," + processingStatus.getSha1() + "," + (processingStatus.isError() ? "Not Found" : "Found") + ",,,," + "\n");
 			}
 		}
 

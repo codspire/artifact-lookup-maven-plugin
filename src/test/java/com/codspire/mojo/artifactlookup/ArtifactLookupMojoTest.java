@@ -1,6 +1,7 @@
 package com.codspire.mojo.artifactlookup;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class ArtifactLookupMojoTest {
 		plugInConfig = new PropertiesConfiguration("plugin-config.properties");
 	}
 
-	@After
+	//@After
 	public void cleanup() {
 
 		FileUtils.deleteQuietly(new File(OUTPUT_DIRECTORY.getAbsoluteFile() + File.separator + plugInConfig.getString("default.dependency.filename")));
@@ -82,7 +83,7 @@ public class ArtifactLookupMojoTest {
 
 		ArtifactLookupMojo artifactLookupMojo = new ArtifactLookupMojo();
 
-		artifactLookupMojo.artifactLocation = new File(ARTIFACT_LOCATION.getAbsoluteFile() + File.separator + "commons-io.jar");
+		artifactLookupMojo.artifactLocation = new File(ARTIFACT_LOCATION.getPath() + File.separator + "commons-io.jar");
 		artifactLookupMojo.outputDirectory = OUTPUT_DIRECTORY;
 		artifactLookupMojo.remoteArtifactRepositories = getArtifactRepositories();
 
@@ -104,5 +105,5 @@ public class ArtifactLookupMojoTest {
 		artifactRepositories.add(repo);
 
 		return artifactRepositories;
-	}
+	}	
 }
