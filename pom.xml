@@ -7,10 +7,36 @@
 	<version>1.0-SNAPSHOT</version>
 	<packaging>maven-plugin</packaging>
 
-	<name>artifact-lookup-maven-plugin Maven Plugin</name>
 
-	<!-- FIXME change it to the project's website -->
-	<url>http://maven.apache.org</url>
+
+	<url>https://github.com/codspire/artifact-lookup-maven-plugin</url>
+
+	<name>Artifact Lookup/Search Maven Plugin</name>
+	<description>
+    	Artifact Lookup/Search Plugin for Maven 3. The Lookup/Search Plugin searches a local jar/zip file in a remote repository and returns Maven dependency node if found in the remote repository.
+  	</description>
+	<inceptionYear>2016</inceptionYear>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<scm>
+		<connection>scm:git:https://github.com/codspire/artifact-lookup-maven-plugin</connection>
+		<developerConnection>scm:git:git@github.com:codspire/artifact-lookup-maven-plugin</developerConnection>
+		<url>https://github.com/codspire/artifact-lookup-maven-plugin</url>
+		<tag>HEAD</tag>
+	</scm>
+
+	<developers>
+		<developer>
+			<id>rakesh</id>
+			<name>Rakesh Nagar</name>
+			<email>rakesh@codspire.com</email>
+		</developer>
+	</developers>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -146,38 +172,14 @@
 			<id>run-its</id>
 			<build>
 
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-invoker-plugin</artifactId>
-						<version>1.7</version>
-						<configuration>
-							<debug>true</debug>
-							<cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
-							<pomIncludes>
-								<pomInclude>*/pom.xml</pomInclude>
-							</pomIncludes>
-							<postBuildHookScript>verify</postBuildHookScript>
-							<localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
-							<settingsFile>src/it/settings.xml</settingsFile>
-							<goals>
-								<goal>clean</goal>
-								<goal>test-compile</goal>
-							</goals>
-						</configuration>
-						<executions>
-							<execution>
-								<id>integration-test</id>
-								<goals>
-									<goal>install</goal>
-									<goal>integration-test</goal>
-									<goal>verify</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-
+				<!-- <plugins> <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-invoker-plugin</artifactId> 
+					<version>1.7</version> <configuration> <debug>true</debug> <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo> 
+					<pomIncludes> <pomInclude>*/pom.xml</pomInclude> </pomIncludes> <postBuildHookScript>verify</postBuildHookScript> 
+					<localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath> 
+					<settingsFile>src/it/settings.xml</settingsFile> <goals> <goal>clean</goal> 
+					<goal>test-compile</goal> </goals> </configuration> <executions> <execution> 
+					<id>integration-test</id> <goals> <goal>install</goal> <goal>integration-test</goal> 
+					<goal>verify</goal> </goals> </execution> </executions> </plugin> </plugins> -->
 			</build>
 		</profile>
 	</profiles>

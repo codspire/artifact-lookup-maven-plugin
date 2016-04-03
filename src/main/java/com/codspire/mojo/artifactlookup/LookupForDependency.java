@@ -16,6 +16,25 @@ import com.codspire.mojo.model.GAV;
 import com.codspire.mojo.model.ProcessingStatus;
 import com.codspire.mojo.utils.FileChecksum;
 
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 //http://www.vineetmanohar.com/2009/11/3-ways-to-run-java-main-from-maven/
 //http://stackoverflow.com/questions/3063215/finding-the-right-version-of-the-right-jar-in-a-maven-repository
 //http://stackoverflow.com/questions/25047781/how-do-i-retrieve-an-artifact-checksum-from-nexus-using-their-rest-api-via-curl
@@ -27,6 +46,12 @@ import com.codspire.mojo.utils.FileChecksum;
 //TODO: unit tests
 //TODO: traverci, git
 
+/**
+ * 
+ *
+ * @author Rakesh Nagar
+ * @since 1.0
+ */
 public class LookupForDependency {
 	private static final String DEFAULT_DEPENDENCY_FILENAME = "default.dependency.filename";
 	private static final String DEFAULT_LOOKUP_STATUS_FILENAME = "default.lookup.status.filename";
