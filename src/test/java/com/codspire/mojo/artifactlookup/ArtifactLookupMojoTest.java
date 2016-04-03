@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.MavenArtifactRepository;
 import org.junit.After;
@@ -75,9 +76,12 @@ public class ArtifactLookupMojoTest {
 
 		artifactLookupMojo.execute();
 
-		assertThat("The files differ!", getExpectedFileContent("expected-pom-dependencies-1.xml"), equalTo(getGeneratedFileContent("default.dependency.filename")));
-		assertThat("The files differ!", getExpectedFileContent("extected-dependency-status-1.csv"), equalTo(getGeneratedFileContent("default.lookup.status.filename")));
+		assertThat("The files differ!", getGeneratedFileContent("default.dependency.filename"), equalTo(getExpectedFileContent("expected-pom-dependencies-1.xml")));
+		assertThat("The files differ!", replace(getGeneratedFileContent("default.lookup.status.filename"), "\\", "/"), equalTo(getExpectedFileContent("extected-dependency-status-1.csv")));
+	}
 
+	private String replace(String text, String searchString, String replacement) {
+		return StringUtils.replace(text, searchString, replacement);
 	}
 
 	private String getGeneratedFileContent(String fileType) throws Exception {
@@ -99,8 +103,8 @@ public class ArtifactLookupMojoTest {
 
 		artifactLookupMojo.execute();
 
-		assertThat("The files differ!", getExpectedFileContent("expected-pom-dependencies-2.xml"), equalTo(getGeneratedFileContent("default.dependency.filename")));
-		assertThat("The files differ!", getExpectedFileContent("extected-dependency-status-2.csv"), equalTo(getGeneratedFileContent("default.lookup.status.filename")));
+		assertThat("The files differ!", getGeneratedFileContent("default.dependency.filename"), equalTo(getExpectedFileContent("expected-pom-dependencies-2.xml")));
+		assertThat("The files differ!", replace(getGeneratedFileContent("default.lookup.status.filename"), "\\", "/"), equalTo(getExpectedFileContent("extected-dependency-status-2.csv")));
 	}
 
 	@Test
@@ -114,8 +118,8 @@ public class ArtifactLookupMojoTest {
 
 		artifactLookupMojo.execute();
 
-		assertThat("The files differ!", getExpectedFileContent("expected-pom-dependencies-3.xml"), equalTo(getGeneratedFileContent("default.dependency.filename")));
-		assertThat("The files differ!", getExpectedFileContent("extected-dependency-status-3.csv"), equalTo(getGeneratedFileContent("default.lookup.status.filename")));
+		assertThat("The files differ!", getGeneratedFileContent("default.dependency.filename"), equalTo(getExpectedFileContent("expected-pom-dependencies-3.xml")));
+		assertThat("The files differ!", replace(getGeneratedFileContent("default.lookup.status.filename"), "\\", "/"), equalTo(getExpectedFileContent("extected-dependency-status-3.csv")));
 	}
 
 	private List<ArtifactRepository> getArtifactRepositories() {

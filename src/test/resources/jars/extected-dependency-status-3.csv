@@ -1,2 +1,2 @@
 File,SHA1,Status,GroupId,ArtifactId,Version,ArtifactRepository
-src\test\resources\jars\commons-io.jar,b1b6ea3b7e4aa4f492509a4952029cd8e48019ad,Found,commons-io,commons-io,2.4,https://repo.maven.apache.org/maven2/
+src/test/resources/jars/commons-io.jar,b1b6ea3b7e4aa4f492509a4952029cd8e48019ad,Found,commons-io,commons-io,2.4,https://repo.maven.apache.org/maven2/
