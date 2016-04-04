@@ -7,3 +7,8 @@
 Artifact Lookup/Search Plugin for Maven 3. The Lookup/Search Plugin searches a local jar/zip file in a remote repository and returns Maven dependency node if found in the remote repository.
 
 
+Single file check
+All files in a directory and sub directory
+Look for a default repo (based on settings.xml)
+Look against set of repos
+ 

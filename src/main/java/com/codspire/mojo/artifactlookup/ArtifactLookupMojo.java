@@ -71,17 +71,22 @@ import org.apache.maven.plugins.annotations.Parameter;
 // https://www.javacodegeeks.com/2015/04/there-is-a-mojo-in-my-dojo-how-to-write-a-maven-plugin.html
 // bucket of jars to nice clean dependencies (for external and internal
 // libraries)
-//copyright header
-//javadocs
-//plug-in docs
-//plug-in help
-//fix all TODO and FIXME
+// copyright header
+// javadocs
+// plug-in docs
+// plug-in help
+// fix all TODO and FIXME
+// good documentation https://github.com/jbt/docker
+
 @Mojo(requiresProject = false, name = "lookup", defaultPhase = LifecyclePhase.NONE)
 public class ArtifactLookupMojo extends AbstractMojo {
 
 	// @Component
 	// private Settings settings;
 
+	/**
+	 * 
+	 */
 	@Parameter(readonly = true, required = true, defaultValue = "${project.remoteArtifactRepositories}")
 	protected List<ArtifactRepository> remoteArtifactRepositories;
 
@@ -89,18 +94,27 @@ public class ArtifactLookupMojo extends AbstractMojo {
 	// "${localRepository}")
 	// protected ArtifactRepository localRepository;
 
-	@Parameter(readonly = true, required = true, property = "artifactLocation", defaultValue = "/c/temp/dependency")
+	/**
+	 * 
+	 */
+	@Parameter(readonly = true, required = true, property = "artifactLocation", defaultValue = ".")
 	protected File artifactLocation;
 
+	/**
+	 * 
+	 */
 	@Parameter(readonly = true, required = false, property = "repositoryUrl")
 	protected String repositoryUrl;
 
 	/**
 	 * Location of the output files.
 	 */
-	@Parameter(defaultValue = ".", property = "outputDir", required = true)
+	@Parameter(required = true, property = "outputDir", defaultValue = ".")
 	protected File outputDirectory;
 
+	/**
+	 * 
+	 */
 	public void execute() throws MojoExecutionException {
 		try {
 			lookupArtifacts();
@@ -109,6 +123,10 @@ public class ArtifactLookupMojo extends AbstractMojo {
 		}
 	}
 
+	/**
+	 * 
+	 * @throws Exception
+	 */
 	private void lookupArtifacts() throws Exception {
 		Log log = getLog();
 		validateRemoteArtifactRepositories();
@@ -116,7 +134,7 @@ public class ArtifactLookupMojo extends AbstractMojo {
 
 		List<String> remoteArtifactRepositoriesURL = getRemoteArtifactRepositoriesURL(remoteArtifactRepositories);
 
-		log.info(artifactLocation.getAbsolutePath() + "is file = " + artifactLocation.isFile());
+		log.info(artifactLocation.getAbsolutePath() + " is file = " + artifactLocation.isFile());
 
 		if (log.isDebugEnabled()) {
 			log.debug("Remote Artifact Repositories");
@@ -127,18 +145,29 @@ public class ArtifactLookupMojo extends AbstractMojo {
 		lookupForDependency.process();
 	}
 
+	/**
+	 * 
+	 */
 	protected void validateArtifactLocation() {
 		if (!artifactLocation.exists()) {
 			throw new ContextedRuntimeException("ERROR: artifactLocation property is invalid. Please provide -DartifactLocation=<file or folder path>");
 		}
 	}
 
+	/**
+	 * 
+	 */
 	protected void validateRemoteArtifactRepositories() {
 		if (StringUtils.isBlank(repositoryUrl) && CollectionUtils.isEmpty(remoteArtifactRepositories)) {
 			throw new ContextedRuntimeException("ERROR: No remote repository found, please check your settings.xml file");
 		}
 	}
 
+	/**
+	 * 
+	 * @param remoteArtifactRepositories
+	 * @return
+	 */
 	protected List<String> getRemoteArtifactRepositoriesURL(List<ArtifactRepository> remoteArtifactRepositories) {
 
 		List<String> remoteArtifactRepositoriesURLList = null;
