@@ -38,14 +38,12 @@ import org.apache.commons.io.IOUtils;
  */
 public class FileChecksum {
 
-	public static String generateSHA1Checksum(File file) {
+	public static String generateSHA1Checksum(File file) throws Exception {
 		FileInputStream fis = null;
 		String sha1 = null;
 		try {
 			fis = new FileInputStream(file);
 			sha1 = DigestUtils.sha1Hex(fis);
-		} catch (Exception e) {
-			e.printStackTrace();
 		} finally {
 			IOUtils.closeQuietly(fis);
 		}

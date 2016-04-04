@@ -68,6 +68,9 @@ public class ProcessResponse {
 	private PropertiesConfiguration plugInConfig;
 	private Log log;
 
+	// private final CloseableHttpClient httpclient =
+	// HttpClients.createDefault();
+
 	public ProcessResponse() {
 	}
 
@@ -102,54 +105,58 @@ public class ProcessResponse {
 	}
 
 	public GAV lookupRepo(String sha1Checksum) {
+
+		// try {
+		String url = apiEndpoint + sha1Checksum;
+		log.info("Request URL: " + url);
+		HttpGet httpGet = new HttpGet(url);
+
+		ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+			public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+				int status = response.getStatusLine().getStatusCode();
+				if (status >= 200 && status < 300) {
+					HttpEntity entity = response.getEntity();
+					return entity != null ? EntityUtils.toString(entity) : null;
+				} else {
+					throw new ClientProtocolException("Unexpected response status: " + status);
+				}
+			}
+
+		};
+
+		String responseBody = null;
+		GAV gav;
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		try {
+			responseBody = httpclient.execute(httpGet, responseHandler);
 
-			String url = apiEndpoint + sha1Checksum;
-			log.info("Request URL: " + url);
-			HttpGet httpGet = new HttpGet(url);
-
-			ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
-
-				public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
-					int status = response.getStatusLine().getStatusCode();
-					if (status >= 200 && status < 300) {
-						HttpEntity entity = response.getEntity();
-						return entity != null ? EntityUtils.toString(entity) : null;
-					} else {
-						throw new ClientProtocolException("Unexpected response status: " + status);
-					}
-				}
-
-			};
-
-			String responseBody = null;
-			GAV gav;
-			try {
-				responseBody = httpclient.execute(httpGet, responseHandler);
-
-				if (log.isDebugEnabled()) {
-					log.debug("----------------------------------------");
-					log.debug(responseBody);
-					log.debug("----------------------------------------");
-				}
-
-				gav = getGAV(responseBody);
-			} catch (Exception e) {
-				throw new ContextedRuntimeException("Unable to get the http response: " + sha1Checksum, e);
+			if (log.isDebugEnabled()) {
+				log.debug("----------------------------------------");
+				log.debug(responseBody);
+				log.debug("----------------------------------------");
 			}
 
-			if (gav == null || gav.isIncomlete()) {
-				throw new ContextedRuntimeException("No GAV found for " + sha1Checksum);
+			gav = getGAV(responseBody);
+
+			if (log.isDebugEnabled()) {
+				log.debug(gav.toString());
 			}
 
-			return gav;
+		} catch (Exception e) {
+			throw new ContextedRuntimeException("Unable to get the http response: " + url, e);
 		} finally {
 			try {
 				httpclient.close();
 			} catch (Exception e) {
 			}
 		}
+
+		if (gav == null || gav.isIncomlete()) {
+			throw new ContextedRuntimeException("No GAV found for " + sha1Checksum);
+		}
+
+		return gav;
 	}
 
 	public GAV getGAV(String xml) {

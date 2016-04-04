@@ -2,9 +2,14 @@ package com.codspire.mojo.artifactlookup;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
+import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.apache.maven.plugin.logging.Log;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -44,6 +49,11 @@ public class ProcessResponseTest {
 	@Mock
 	Log log;
 
+	@Before
+	public void initMock() {
+		when(log.isDebugEnabled()).thenReturn(Boolean.TRUE);
+	}
+
 	@Test
 	public void cleanupRepositoryURLShouldConvertToLowerCase() {
 		ProcessResponse processResponse = new ProcessResponse();
@@ -62,7 +72,6 @@ public class ProcessResponseTest {
 	public void getAPIEndpointShouldReturnTheAPIEndpointBasedOnRepoUrl() throws Exception {
 
 		PropertiesConfiguration plugInConfig = new PropertiesConfiguration("plugin-config.properties");
-		System.out.println(log);
 		String repository = "http://repo.maven.apache.org/maven2";
 		ProcessResponse processResponse = new ProcessResponse(repository, plugInConfig, log);
 
@@ -88,5 +97,15 @@ public class ProcessResponseTest {
 		processResponse = new ProcessResponse(repository, plugInConfig, log);
 
 		assertThat(processResponse.getAPIEndpoint(repository), equalTo("https://oss.sonatype.org/service/local/lucene/search?sha1="));
+	}
+
+	@Test(expected = ContextedRuntimeException.class)
+	public void getAPIEndpointShouldThrowExceptionForInvalidNexusRepository() throws Exception {
+		PropertiesConfiguration plugInConfig = new PropertiesConfiguration("plugin-config.properties");
+		/* not a valid maven repository */
+		String repository = "http://junk-maven-repo.com";
+		ProcessResponse processResponse = new ProcessResponse(repository, plugInConfig, log);
+
+		processResponse.getAPIEndpoint(repository);
 	}
 }

@@ -14,7 +14,8 @@ import org.apache.maven.plugin.logging.Log;
 
 import com.codspire.mojo.model.GAV;
 import com.codspire.mojo.model.ProcessingStatus;
-import com.codspire.mojo.utils.FileChecksum;
+
+import static com.codspire.mojo.utils.FileChecksum.generateSHA1Checksum;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -84,16 +85,26 @@ public class LookupForDependency {
 		List<ProcessingStatus> artifactsDetails = new ArrayList<ProcessingStatus>();
 
 		if (fileOrFolder.isFile()) {
-			artifactsDetails.add(new ProcessingStatus(fileOrFolder, FileChecksum.generateSHA1Checksum(fileOrFolder)));
+			artifactsDetails.add(new ProcessingStatus(fileOrFolder, getChecksumForFile(fileOrFolder)));
 		} else {
 			Iterator<File> iterateFiles = FileUtils.iterateFiles(fileOrFolder, plugInConfig.getStringArray(ARTIFACT_FILE_EXTENSIONS), true);
 
 			while (iterateFiles.hasNext()) {
 				File file = iterateFiles.next();
-				artifactsDetails.add(new ProcessingStatus(file, FileChecksum.generateSHA1Checksum(file)));
+				artifactsDetails.add(new ProcessingStatus(file, getChecksumForFile(file)));
 			}
 		}
 		return artifactsDetails;
+	}
+
+	protected String getChecksumForFile(File file) {
+
+		try {
+			return generateSHA1Checksum(file);
+		} catch (Exception e) {
+			log.error("Error generating SHA1 Checksum for " + file.getPath() + ". " + e.getMessage());
+			return null;
+		}
 	}
 
 	public synchronized void process() {
@@ -107,9 +118,13 @@ public class LookupForDependency {
 
 				for (ProcessingStatus processingStatus : tempNotFoundList) {
 					try {
+						if (log.isDebugEnabled()) {
+							log.info("Looking up " + processingStatus.toString());
+						}
 						log.info("Looking up " + processingStatus.getArtifact().getAbsolutePath());
-						// TODO: can ProcessResponse be reused?
+
 						ProcessResponse processResponse = new ProcessResponse(artifactRepository, plugInConfig, log);
+
 						GAV gav = processResponse.lookupRepo(processingStatus.getSha1());
 
 						processingStatus.setGav(gav);
@@ -119,16 +134,17 @@ public class LookupForDependency {
 
 						this.notFoundList.remove(processingStatus);
 						this.foundList.add(processingStatus);
-
 					} catch (Exception e) {
 						processingStatus.markError();
-						processingStatus.setStatusMessage("ERROR: " + processingStatus.getArtifact().getAbsolutePath() + " could not be resolved. " + e.getMessage());
-						System.err.println(processingStatus.getStatusMessage());
+						processingStatus.setStatusMessage("WARN: " + processingStatus.getArtifact().getAbsolutePath() + " could not be resolved. " + e.getMessage());
+						log.warn(processingStatus.getStatusMessage());
+						// System.err.println(processingStatus.getStatusMessage());
 					}
 
 					log.info("Not Found Count = " + this.notFoundList.size());
 					log.info("Found Count = " + this.foundList.size());
 				}
+
 			}
 		}
 		writePOMDependencies();
@@ -176,8 +192,8 @@ public class LookupForDependency {
 
 			if (!processingStatus.isError() && gav != null) {
 
-				statusCSV.append(processingStatus.getArtifact().getPath() + "," + processingStatus.getSha1() + "," + (processingStatus.isError() ? "Not Found" : "Found") + ","
-						+ gav.getGroupId() + "," + gav.getArtifactId() + "," + gav.getVersion() + "," + processingStatus.getArtifactRepository() + "\n");
+				statusCSV.append(processingStatus.getArtifact().getPath() + "," + processingStatus.getSha1() + "," + (processingStatus.isError() ? "Not Found" : "Found") + "," + gav.getGroupId()
+						+ "," + gav.getArtifactId() + "," + gav.getVersion() + "," + processingStatus.getArtifactRepository() + "\n");
 			} else {
 				statusCSV.append(processingStatus.getArtifact().getPath() + "," + processingStatus.getSha1() + "," + (processingStatus.isError() ? "Not Found" : "Found") + ",,,," + "\n");
 			}

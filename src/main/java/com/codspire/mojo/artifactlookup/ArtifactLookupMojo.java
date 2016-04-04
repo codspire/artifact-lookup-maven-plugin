@@ -135,11 +135,7 @@ public class ArtifactLookupMojo extends AbstractMojo {
 	 * Executes the artifact-lookup-maven-plugin:lookup
 	 */
 	public void execute() throws MojoExecutionException {
-		try {
-			lookupArtifacts();
-		} catch (Exception e) {
-			getLog().error("Error executing the plugin", e);
-		}
+		lookupArtifacts();
 	}
 
 	/**
@@ -159,7 +155,7 @@ public class ArtifactLookupMojo extends AbstractMojo {
 
 		if (log.isDebugEnabled()) {
 			log.debug("Remote Artifact Repositories");
-			log.debug(remoteArtifactRepositories.toString());
+			log.debug((remoteArtifactRepositories != null) ? remoteArtifactRepositories.toString() : "remoteArtifactRepositories is null");
 		}
 
 		LookupForDependency lookupForDependency = new LookupForDependency(artifactLocation, remoteArtifactRepositoriesURL, outputDirectory, log);
@@ -170,7 +166,7 @@ public class ArtifactLookupMojo extends AbstractMojo {
 	 * Validates if the @artifactLocation is correct.
 	 */
 	protected void validateArtifactLocation() {
-		if (!artifactLocation.exists()) {
+		if (artifactLocation == null || !artifactLocation.exists()) {
 			throw new ContextedRuntimeException("ERROR: artifactLocation property is invalid. Please provide -DartifactLocation=<file or folder path>");
 		}
 	}

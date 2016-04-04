@@ -4,6 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
@@ -49,5 +50,12 @@ public class FileChecksumTest {
 		assertThat(FileChecksum.generateSHA1Checksum(file), equalTo("58f2997b964283847176ff771fdca42d0c094822"));
 
 		FileUtils.deleteQuietly(file);
+	}
+	
+	@Test (expected = FileNotFoundException.class)
+	public void validateSHA1ChecksumIsNullForInvalidFile() throws Exception {
+
+		File file = new File("validateSHA1Checksum_707.txt");
+		assertThat(FileChecksum.generateSHA1Checksum(file), equalTo(null));
 	}
 }

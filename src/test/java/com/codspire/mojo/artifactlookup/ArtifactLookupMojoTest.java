@@ -12,11 +12,21 @@ import java.util.List;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.MavenArtifactRepository;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.logging.Log;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+
+import static org.mockito.Mockito.*;
+
+import org.mockito.runners.MockitoJUnitRunner;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -46,13 +56,31 @@ import org.junit.Test;
  * @author Rakesh Nagar
  * @since 1.0
  */
+@RunWith(MockitoJUnitRunner.class)
 public class ArtifactLookupMojoTest {
+	@Mock
+	Log log;
+
+	ArtifactLookupMojo artifactLookupMojo = null;
 
 	private static final File ARTIFACT_LOCATION = new File("src/test/resources/jars");
 	private static final File OUTPUT_DIRECTORY = new File("target");
 
 	private static PropertiesConfiguration plugInConfig;
 
+	@Before
+	public void initMock() {
+		when(log.isDebugEnabled()).thenReturn(Boolean.TRUE);
+		artifactLookupMojo = spy(new ArtifactLookupMojo());
+
+		when(artifactLookupMojo.getLog()).thenReturn(log);
+	}
+	
+//	@After
+//	public void resetMock() {
+//		reset(artifactLookupMojo);
+//	}
+	
 	@BeforeClass
 	public static void initBefore() throws Exception {
 		plugInConfig = new PropertiesConfiguration("plugin-config.properties");
@@ -68,7 +96,7 @@ public class ArtifactLookupMojoTest {
 	@Test
 	public void artifactLookupMojoShouldReturnMatchingDependenciesBasedOnRepositoryUrl() throws Exception {
 
-		ArtifactLookupMojo artifactLookupMojo = new ArtifactLookupMojo();
+//		ArtifactLookupMojo artifactLookupMojo = new ArtifactLookupMojo();
 
 		artifactLookupMojo.artifactLocation = ARTIFACT_LOCATION;
 		artifactLookupMojo.outputDirectory = OUTPUT_DIRECTORY;
@@ -95,7 +123,7 @@ public class ArtifactLookupMojoTest {
 	@Test
 	public void artifactLookupMojoShouldReturnMatchingDependenciesBasedOnArtifactRepository() throws Exception {
 
-		ArtifactLookupMojo artifactLookupMojo = new ArtifactLookupMojo();
+//		ArtifactLookupMojo artifactLookupMojo = new ArtifactLookupMojo();
 
 		artifactLookupMojo.artifactLocation = ARTIFACT_LOCATION;
 		artifactLookupMojo.outputDirectory = OUTPUT_DIRECTORY;
@@ -110,7 +138,7 @@ public class ArtifactLookupMojoTest {
 	@Test
 	public void artifactLookupMojoShouldReturnMatchingDependenciesBasedOnArtifactRepositoryForSingleFile() throws Exception {
 
-		ArtifactLookupMojo artifactLookupMojo = new ArtifactLookupMojo();
+//		ArtifactLookupMojo artifactLookupMojo = new ArtifactLookupMojo();
 
 		artifactLookupMojo.artifactLocation = new File(ARTIFACT_LOCATION.getPath() + File.separator + "commons-io.jar");
 		artifactLookupMojo.outputDirectory = OUTPUT_DIRECTORY;
@@ -120,6 +148,31 @@ public class ArtifactLookupMojoTest {
 
 		assertThat("The files differ!", getGeneratedFileContent("default.dependency.filename"), equalTo(getExpectedFileContent("expected-pom-dependencies-3.xml")));
 		assertThat("The files differ!", replace(getGeneratedFileContent("default.lookup.status.filename"), "\\", "/"), equalTo(getExpectedFileContent("extected-dependency-status-3.csv")));
+	}
+
+	@Test(expected = ContextedRuntimeException.class)
+	public void artifactLookupMojoShouldThrowExceptionOnInvalidArtifactLocation() throws MojoExecutionException {
+
+//		ArtifactLookupMojo artifactLookupMojo = new ArtifactLookupMojo();
+
+		artifactLookupMojo.artifactLocation = null;
+		artifactLookupMojo.outputDirectory = OUTPUT_DIRECTORY;
+		artifactLookupMojo.repositoryUrl = "https://oss.sonatype.org/content/groups/public/";
+
+		artifactLookupMojo.execute();
+	}
+
+	@Test(expected = ContextedRuntimeException.class)
+	public void artifactLookupMojoShouldThrowExceptionOnInvalidRemoteArtifactRepositories() throws MojoExecutionException {
+
+//		ArtifactLookupMojo artifactLookupMojo = new ArtifactLookupMojo();
+
+		artifactLookupMojo.artifactLocation = ARTIFACT_LOCATION;
+		artifactLookupMojo.remoteArtifactRepositories = null;
+		artifactLookupMojo.outputDirectory = OUTPUT_DIRECTORY;
+		artifactLookupMojo.repositoryUrl = null;
+
+		artifactLookupMojo.execute();
 	}
 
 	private List<ArtifactRepository> getArtifactRepositories() {
@@ -135,4 +188,5 @@ public class ArtifactLookupMojoTest {
 
 		return artifactRepositories;
 	}
+
 }
