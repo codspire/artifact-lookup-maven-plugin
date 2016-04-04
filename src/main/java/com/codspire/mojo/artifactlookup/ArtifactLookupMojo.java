@@ -42,10 +42,13 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
 /**
- * Goal which touches a timestamp file. mvn clean install;mvn
- * com.codspire.plugin:artifact-lookup-maven-plugin:lookup
- * -DartifactLocation=c:\\temp\\dependency
+ * Goal which searches local dependency jar/zip files in remote Maven repository
+ * and translates them into respective Maven dependency coordinates (groupId,
+ * artifactId, version).
+ * 
+ * @author Rakesh Nagar
  */
+
 // http://central.sonatype.org/pages/consumers.html
 // blogpost
 // linkedin blog
@@ -85,7 +88,8 @@ public class ArtifactLookupMojo extends AbstractMojo {
 	// private Settings settings;
 
 	/**
-	 * 
+	 * Remote repositories resolved from effective settings. No need to manually
+	 * set since it will be resolved from existing settings configurations.
 	 */
 	@Parameter(readonly = true, required = true, defaultValue = "${project.remoteArtifactRepositories}")
 	protected List<ArtifactRepository> remoteArtifactRepositories;
@@ -95,25 +99,40 @@ public class ArtifactLookupMojo extends AbstractMojo {
 	// protected ArtifactRepository localRepository;
 
 	/**
+	 * Specify the local directory containing the artifacts that need to be
+	 * searched in remote Maven repositories. The plugin will look for jar/zip
+	 * files in the @artifactLocation directory and its sub-directories.
 	 * 
+	 * Alternatively, you can pass the path of a single artifact against that
+	 * needs to be searched in remote Maven repositories.
+	 * 
+	 * This defaults to current directory where this plugin is run.
 	 */
-	@Parameter(readonly = true, required = true, property = "artifactLocation", defaultValue = ".")
+	@Parameter(readonly = false, required = true, property = "artifactLocation", defaultValue = ".")
 	protected File artifactLocation;
 
 	/**
+	 * Optional property to specify remote Maven repository Url(s) if you want
+	 * to search the artifacts in a repositories not configured in your
+	 * settings.xml (This will supersede the remote repositories configured in
+	 * Maven setttings.xml). Supports comma separated values.
 	 * 
 	 */
-	@Parameter(readonly = true, required = false, property = "repositoryUrl")
+	@Parameter(readonly = false, required = false, property = "repositoryUrl")
 	protected String repositoryUrl;
 
 	/**
-	 * Location of the output files.
+	 * Specify the output directory where the pom.xml dependencies snippet will
+	 * be saved for the successful search results. the plugin will also generate
+	 * a csv file to provide the useful information about the search status.
+	 * 
+	 * This defaults to current directory where this plugin is run.
 	 */
-	@Parameter(required = true, property = "outputDir", defaultValue = ".")
+	@Parameter(readonly = false, required = true, property = "outputDir", defaultValue = ".")
 	protected File outputDirectory;
 
 	/**
-	 * 
+	 * Executes the artifact-lookup-maven-plugin:lookup
 	 */
 	public void execute() throws MojoExecutionException {
 		try {
@@ -124,15 +143,17 @@ public class ArtifactLookupMojo extends AbstractMojo {
 	}
 
 	/**
+	 * Searches the local artifacts specified through @artifactLocation in @remoteArtifactRepositories
+	 * or @repositoryUrl and generates the search results.
 	 * 
-	 * @throws Exception
 	 */
-	private void lookupArtifacts() throws Exception {
+	protected void lookupArtifacts() {
 		Log log = getLog();
+
 		validateRemoteArtifactRepositories();
 		validateArtifactLocation();
 
-		List<String> remoteArtifactRepositoriesURL = getRemoteArtifactRepositoriesURL(remoteArtifactRepositories);
+		List<String> remoteArtifactRepositoriesURL = getRemoteArtifactRepositoriesURL();
 
 		log.info(artifactLocation.getAbsolutePath() + " is file = " + artifactLocation.isFile());
 
@@ -141,12 +162,12 @@ public class ArtifactLookupMojo extends AbstractMojo {
 			log.debug(remoteArtifactRepositories.toString());
 		}
 
-		LookupForDependency lookupForDependency = new LookupForDependency(artifactLocation, remoteArtifactRepositoriesURL, outputDirectory, getLog());
+		LookupForDependency lookupForDependency = new LookupForDependency(artifactLocation, remoteArtifactRepositoriesURL, outputDirectory, log);
 		lookupForDependency.process();
 	}
 
 	/**
-	 * 
+	 * Validates if the @artifactLocation is correct.
 	 */
 	protected void validateArtifactLocation() {
 		if (!artifactLocation.exists()) {
@@ -155,23 +176,27 @@ public class ArtifactLookupMojo extends AbstractMojo {
 	}
 
 	/**
-	 * 
+	 * Validates if the remote Maven repositories information is available
+	 * either through native settings.xml (@remoteArtifactRepositories) or
+	 * through @repositoryUrl parameter.
 	 */
 	protected void validateRemoteArtifactRepositories() {
 		if (StringUtils.isBlank(repositoryUrl) && CollectionUtils.isEmpty(remoteArtifactRepositories)) {
-			throw new ContextedRuntimeException("ERROR: No remote repository found, please check your settings.xml file");
+			throw new ContextedRuntimeException("ERROR: No remote repository found, please check your settings.xml file or -DrepositoryUrl parameter.");
 		}
 	}
 
 	/**
+	 * Generates list of Urls resolved from @remoteArtifactRepositories or
 	 * 
-	 * @param remoteArtifactRepositories
-	 * @return
+	 * @repositoryUrl. Is @repositoryUrl is specified it will supersede the @remoteArtifactRepositories
+	 * 
+	 * @return List remote Maven repository Urls
 	 */
-	protected List<String> getRemoteArtifactRepositoriesURL(List<ArtifactRepository> remoteArtifactRepositories) {
+	protected List<String> getRemoteArtifactRepositoriesURL() {
 
 		List<String> remoteArtifactRepositoriesURLList = null;
-		// prefer repositoryUrl, it will superceed settings.xml
+		/* prefer repositoryUrl, it will supersede settings.xml */
 
 		if (StringUtils.isNotBlank(repositoryUrl)) {
 			getLog().info("Using repository: " + repositoryUrl);
@@ -184,6 +209,8 @@ public class ArtifactLookupMojo extends AbstractMojo {
 				remoteArtifactRepositoriesURLList.add(artifactRepository.getUrl());
 			}
 		}
+
+		getLog().info("Repositories that will be searched: " + remoteArtifactRepositoriesURLList);
 		return remoteArtifactRepositoriesURLList;
 	}
 }
