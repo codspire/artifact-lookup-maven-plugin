@@ -113,11 +113,11 @@ $ mvn com.codspire.plugin:artifact-lookup-maven-plugin:lookup \
 [INFO] ------------------------------------------------------------------------
 ```
 
-### Example 3: Search specific jar in alternate remote repository (not configured in `settings.xml`)
+### Example 3: Search specific jar in alternate remote repository (supersedes `settings.xml`)
 ```
-# mvn com.codspire.plugin:artifact-lookup-maven-plugin:lookup \
-> -DartifactLocation=./activation.jar \
-> -DrepositoryUrl=https://oss.sonatype.org/content/groups/public/
+$ mvn com.codspire.plugin:artifact-lookup-maven-plugin:lookup \
+ -DartifactLocation=./activation.jar \
+ -DrepositoryUrl=https://oss.sonatype.org/content/groups/public/
 ```
 
 ```
