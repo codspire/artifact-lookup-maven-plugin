@@ -32,8 +32,7 @@ This plugin follows a minimalistic approach. Available options are:
 ## Key Points
 * Arfifacts are searched based on `SHA1` checksum of the file.
 * Default Maven remote repositories are determined based on user's effective Maven `settings.xml` file. 
-* If there are more than one remote repository, the jars are sequentially searched  against all repositories until the match is found.
-* 
+* If there are more than one remote repository, the jars are sequentially searched against all repositories until the match is found.
 
 ### Examples
  
@@ -43,3 +42,9 @@ This plugin follows a minimalistic approach. Available options are:
 * https://repo1.maven.org/maven2/
 * https://repository.jboss.org/nexus/content/groups/public/
 * Privately hosted Sonatype Nexus repository
+
+## Author
+[Rakesh Nagar](https://github.com/codspire)
+
+## Licence
+This code is released under the Apache License Version 2.0. See [LICENSE](https://github.com/codspire/artifact-lookup-maven-plugin/blob/master/LICENSE)
