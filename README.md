@@ -83,7 +83,7 @@ $ mvn com.codspire.plugin:artifact-lookup-maven-plugin:lookup
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
 ```
-### Example 2: Search specific jars in default remote repository
+### Example 2: Search specific jar in default remote repository
 ```
 $ mvn com.codspire.plugin:artifact-lookup-maven-plugin:lookup \
 -DartifactLocation=./activation.jar
@@ -113,7 +113,7 @@ $ mvn com.codspire.plugin:artifact-lookup-maven-plugin:lookup \
 [INFO] ------------------------------------------------------------------------
 ```
 
-### Example 3: Search jars in alternate remote repository (not configured in `settings.xml`)
+### Example 3: Search specific jar in alternate remote repository (not configured in `settings.xml`)
 ```
 # mvn com.codspire.plugin:artifact-lookup-maven-plugin:lookup \
 > -DartifactLocation=./activation.jar \
