@@ -5,11 +5,19 @@
 [![Dependency Status](https://www.versioneye.com/user/projects/5701a4b2fcd19a0039f1562e/badge.svg?style=flat)](https://www.versioneye.com/user/projects/5701a4b2fcd19a0039f1562e)
 [![Coverage Status](https://coveralls.io/repos/github/codspire/artifact-lookup-maven-plugin/badge.svg?branch=master)](https://coveralls.io/github/codspire/artifact-lookup-maven-plugin?branch=master)
 
+This "Artifact Lookup Maven Plugin" acts as a Maven command line utility that can search local jar/zip files in remote Maven repositories. The search result is returned in the form of Maven `<dependency>` coordinates (groupId, artifactId & version) that can be used in the pom file.
 ![Artifact Lookup Maven Plugin Info](https://raw.githubusercontent.com/codspire/artifact-lookup-maven-plugin/master/src/main/resources/artifact-lookup-maven-plugin-info.png)
 
-This "Artifact Lookup Maven Plugin" acts as a Maven command line utility that can search local jar/zip files in remote Maven repositories. The search result is returned in the form of Maven `<dependency>` coordinates (groupId, artifactId & version) that can be used in the pom file.
 
-This could be quite beneficial for non Maven Java projects that are migrating to Maven and are faced with a daunting task of resolving the project dependencies from remote Maven repositories. This could be quite an error prone and time consuming activity if there are large number of jars scattered across many directories/sub-directories. Its becomes even harder if the local jar files are not following the version based naming convention (e.g. `httpclient.jar` as against `httpclient-4.5.2.jar`).
+
+
+
+
+
+# Motivation
+Provide a Maven friendly utility that that supports "search by jar or directory" feature (equivalent to Google's 'Search by image'). 
+
+This could be quite beneficial for legacy Java projects that are migrating to Maven. The migration often involves the daunting task of locating the existing project dependencies in the remote Maven repositories which could take several days or weeks based on the size and complexity of the project. This activity becomes even harder and error prone if the jar files are scattered across many directories/sub-directories and their naming is not alignd to version based naming convention (e.g. `httpclient.jar` as against `httpclient-4.5.2.jar`).
 
 ## Installation
 ```sh
