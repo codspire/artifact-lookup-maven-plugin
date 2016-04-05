@@ -31,6 +31,7 @@ This plugin follows a minimalistic approach. Available options are:
 
 Default Maven remote repositories are determined based on user's effective Maven `settings.xml` file. If there are more than one remote repository, the jars are sequentially searched  against all repositories until the match is found.
 
+### Examples
  
 ## Tested against
 * https://oss.sonatype.org/content/groups/public/
@@ -38,3 +39,6 @@ Default Maven remote repositories are determined based on user's effective Maven
 * https://repo1.maven.org/maven2/
 * https://repository.jboss.org/nexus/content/groups/public/
 * Privately hosted Sonatype Nexus repository
+
+
+<script src="https://gist.github.com/nisrulz/11c0d63428b108f10c83.js"></script>
