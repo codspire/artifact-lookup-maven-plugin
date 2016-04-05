@@ -41,4 +41,4 @@ Default Maven remote repositories are determined based on user's effective Maven
 * Privately hosted Sonatype Nexus repository
 
 
-<script src="https://gist.github.com/nisrulz/11c0d63428b108f10c83.js"></script>
+<script src="https://gist.github.com/codspire/8831da96879535db07e91b545d2cc3cf.js"></script>
