@@ -37,7 +37,7 @@ This plugin follows a minimalistic approach. Available options are:
 ## Examples
 
 ### Example 1: Search all jars in a folder in default remote repository
-cd to a folder jars folder
+cd to the folder that contains jar files
 ```
 $ ls
 activation.jar  commons-io.jar  junit.jar
