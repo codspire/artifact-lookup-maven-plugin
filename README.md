@@ -34,8 +34,115 @@ This plugin follows a minimalistic approach. Available options are:
 * Default Maven remote repositories are determined based on user's effective Maven `settings.xml` file. 
 * If there are more than one remote repository, the jars are sequentially searched against all repositories until the match is found.
 
-### Examples
- 
+## Examples
+
+### Example 1: Search all jars in a folder in default remote repository
+cd to a folder jars folder
+```
+$ ls
+activation.jar  commons-io.jar  junit.jar
+```
+run the plugin
+
+```
+$ mvn com.codspire.plugin:artifact-lookup-maven-plugin:lookup
+```
+
+```
+[INFO] Scanning for projects...
+...
+...
+[INFO] ------------------------------------------------------------------------
+[INFO] DEPENDENCIES
+[INFO] ------------------------------------------------------------------------
+[INFO]
+<dependencies>
+        <!-- Resolved from http://repo.maven.apache.org/maven2 -->
+        <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+        </dependency>
+        <!-- Resolved from http://repo.maven.apache.org/maven2 -->
+        <dependency>
+                <groupId>javax.activation</groupId>
+                <artifactId>activation</artifactId>
+                <version>1.1</version>
+        </dependency>
+        <!-- Resolved from http://repo.maven.apache.org/maven2 -->
+        <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.4</version>
+        </dependency>
+</dependencies>
+
+[INFO] ------------------------------------------------------------------------
+...
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+```
+### Example 2: Search specific jars in default remote repository
+```
+$ mvn com.codspire.plugin:artifact-lookup-maven-plugin:lookup \
+-DartifactLocation=./activation.jar
+```
+
+```
+[INFO] Scanning for projects...
+...
+...
+[INFO] ------------------------------------------------------------------------
+[INFO] DEPENDENCIES
+[INFO] ------------------------------------------------------------------------
+[INFO]
+<dependencies>
+        <!-- Resolved from http://repo.maven.apache.org/maven2 -->
+        <dependency>
+                <groupId>javax.activation</groupId>
+                <artifactId>activation</artifactId>
+                <version>1.1</version>
+        </dependency>
+</dependencies>
+
+[INFO] ------------------------------------------------------------------------
+...
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+```
+
+### Example 3: Search jars in alternate remote repository (not configured in `settings.xml`)
+```
+# mvn com.codspire.plugin:artifact-lookup-maven-plugin:lookup \
+> -DartifactLocation=./activation.jar \
+> -DrepositoryUrl=https://oss.sonatype.org/content/groups/public/
+```
+
+```
+[INFO] Scanning for projects...
+...
+...
+[INFO] ------------------------------------------------------------------------
+[INFO] DEPENDENCIES
+[INFO] ------------------------------------------------------------------------
+[INFO]
+<dependencies>
+        <!-- Resolved from https://oss.sonatype.org/content/groups/public/ -->
+        <dependency>
+                <groupId>javax.activation</groupId>
+                <artifactId>activation</artifactId>
+                <version>1.1</version>
+        </dependency>
+</dependencies>
+
+[INFO] ------------------------------------------------------------------------
+...
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+```
 ## Tested With
 * https://oss.sonatype.org/content/groups/public/
 * https://repo.maven.apache.org/maven2/
