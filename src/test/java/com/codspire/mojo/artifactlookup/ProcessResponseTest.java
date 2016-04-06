@@ -2,10 +2,8 @@ package com.codspire.mojo.artifactlookup;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.apache.maven.plugin.logging.Log;

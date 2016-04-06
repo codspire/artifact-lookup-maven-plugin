@@ -83,7 +83,8 @@ import org.apache.maven.plugins.annotations.Parameter;
 // add javadocs and javadocs badge
 // use dependency management
 // use maven properties for version
-
+// http://stackoverflow.com/questions/12026410/maven-plugin-prefix-resolution-doesnt-seem-to-work-as-expected
+//gpg signing
 @Mojo(requiresProject = false, name = "lookup", defaultPhase = LifecyclePhase.NONE)
 public class ArtifactLookupMojo extends AbstractMojo {
 
