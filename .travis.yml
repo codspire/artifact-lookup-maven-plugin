@@ -4,6 +4,6 @@ jdk:
 sudo: false
 script: mvn clean install
 after_success:
-  - mvn -X clean test jacoco:report coveralls:report
+  - mvn clean test jacoco:report coveralls:report
   - .travis/before-deploy.sh
   - .travis/deploy.sh
