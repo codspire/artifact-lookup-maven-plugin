@@ -49,6 +49,10 @@
 		<url>https://github.com/codspire/artifact-lookup-maven-plugin</url>
 		<tag>HEAD</tag>
 	</scm>
+	<issueManagement>
+		<system>github</system>
+		<url>https://github.com/codspire/artifact-lookup-maven-plugin/issues</url>
+	</issueManagement>
 
 	<developers>
 		<developer>
