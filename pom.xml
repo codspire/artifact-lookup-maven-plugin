@@ -334,7 +334,7 @@
 			<activation>
 				<property>
 					<name>user.name</name>
-					<value>travis</value>
+					<value>travis-xx</value>
 				</property>
 			</activation>
 			<build>
