@@ -1,9 +1,6 @@
 # Artifact Lookup Maven Plugin
 
-[![Apache License, Version 2.0, January 2004](https://img.shields.io/github/license/mojohaus/versions-maven-plugin.svg?label=License)](http://www.apache.org/licenses/)
-[![Build Status](https://travis-ci.org/codspire/artifact-lookup-maven-plugin.svg?branch=master)](https://travis-ci.org/codspire/artifact-lookup-maven-plugin)
-[![Dependency Status](https://www.versioneye.com/user/projects/5701a4b2fcd19a0039f1562e/badge.svg?style=flat)](https://www.versioneye.com/user/projects/5701a4b2fcd19a0039f1562e)
-[![Coverage Status](https://coveralls.io/repos/github/codspire/artifact-lookup-maven-plugin/badge.svg?branch=master)](https://coveralls.io/github/codspire/artifact-lookup-maven-plugin?branch=master)
+[![Apache License, Version 2.0, January 2004](https://img.shields.io/github/license/mojohaus/versions-maven-plugin.svg?label=License)](http://www.apache.org/licenses/) [![Build Status](https://travis-ci.org/codspire/artifact-lookup-maven-plugin.svg?branch=master)](https://travis-ci.org/codspire/artifact-lookup-maven-plugin) [![Dependency Status](https://www.versioneye.com/user/projects/5701a4b2fcd19a0039f1562e/badge.svg?style=flat)](https://www.versioneye.com/user/projects/5701a4b2fcd19a0039f1562e) [![Coverage Status](https://coveralls.io/repos/github/codspire/artifact-lookup-maven-plugin/badge.svg?branch=master)](https://coveralls.io/github/codspire/artifact-lookup-maven-plugin?branch=master) [![Codacy Badge](https://api.codacy.com/project/badge/grade/ed1b3ddf0664422d88d768a87f659e16)](https://www.codacy.com/app/codspire/artifact-lookup-maven-plugin)
 
 This "Artifact Lookup Maven Plugin" acts as a Maven command line utility that can search local jar/zip files in remote Maven repositories. The search results are returned in the form of Maven `<dependency>` coordinates (groupId, artifactId & version) that can be used in the pom file.
 ![Artifact Lookup Maven Plugin Info](https://raw.githubusercontent.com/codspire/artifact-lookup-maven-plugin/master/src/main/resources/artifact-lookup-maven-plugin-info.png)
