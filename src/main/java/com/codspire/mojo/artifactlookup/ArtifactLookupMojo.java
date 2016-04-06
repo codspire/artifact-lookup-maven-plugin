@@ -84,7 +84,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 // use dependency management
 // use maven properties for version
 // http://stackoverflow.com/questions/12026410/maven-plugin-prefix-resolution-doesnt-seem-to-work-as-expected
-//gpg signing
+// gpg signing
 @Mojo(requiresProject = false, name = "lookup", defaultPhase = LifecyclePhase.NONE)
 public class ArtifactLookupMojo extends AbstractMojo {
 
@@ -105,7 +105,7 @@ public class ArtifactLookupMojo extends AbstractMojo {
 	/**
 	 * Specify the local directory containing the artifacts that need to be
 	 * searched in remote Maven repositories. The plugin will look for jar/zip
-	 * files in the @artifactLocation directory and its sub-directories.
+	 * files in the "artifactLocation" directory and its sub-directories.
 	 * 
 	 * Alternatively, you can pass the path of a single artifact against that
 	 * needs to be searched in remote Maven repositories.
@@ -143,8 +143,8 @@ public class ArtifactLookupMojo extends AbstractMojo {
 	}
 
 	/**
-	 * Searches the local artifacts specified through @artifactLocation in @remoteArtifactRepositories
-	 * or @repositoryUrl and generates the search results.
+	 * Searches the local artifacts specified through "artifactLocation" in "remoteArtifactRepositories"
+	 * or "repositoryUrl" and generates the search results.
 	 * 
 	 */
 	protected void lookupArtifacts() {
@@ -167,7 +167,7 @@ public class ArtifactLookupMojo extends AbstractMojo {
 	}
 
 	/**
-	 * Validates if the @artifactLocation is correct.
+	 * Validates if the "artifactLocation" is correct.
 	 */
 	protected void validateArtifactLocation() {
 		if (artifactLocation == null || !artifactLocation.exists()) {
@@ -177,8 +177,8 @@ public class ArtifactLookupMojo extends AbstractMojo {
 
 	/**
 	 * Validates if the remote Maven repositories information is available
-	 * either through native settings.xml (@remoteArtifactRepositories) or
-	 * through @repositoryUrl parameter.
+	 * either through native settings.xml ("remoteArtifactRepositories") or
+	 * through "repositoryUrl" parameter.
 	 */
 	protected void validateRemoteArtifactRepositories() {
 		if (StringUtils.isBlank(repositoryUrl) && CollectionUtils.isEmpty(remoteArtifactRepositories)) {
@@ -187,9 +187,9 @@ public class ArtifactLookupMojo extends AbstractMojo {
 	}
 
 	/**
-	 * Generates list of Urls resolved from @remoteArtifactRepositories or
-	 * 
-	 * @repositoryUrl. Is @repositoryUrl is specified it will supersede the @remoteArtifactRepositories
+	 * Generates list of Urls resolved from "remoteArtifactRepositories" or
+	 * "repositoryUrl", If "repositoryUrl" is specified it will supersede the
+	 * "remoteArtifactRepositories"
 	 * 
 	 * @return List remote Maven repository Urls
 	 */
