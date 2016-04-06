@@ -80,6 +80,9 @@ import org.apache.maven.plugins.annotations.Parameter;
 // plug-in help
 // fix all TODO and FIXME
 // good documentation https://github.com/jbt/docker
+// add javadocs and javadocs badge
+// use dependency management
+// use maven properties for version
 
 @Mojo(requiresProject = false, name = "lookup", defaultPhase = LifecyclePhase.NONE)
 public class ArtifactLookupMojo extends AbstractMojo {
