@@ -1,25 +1,9 @@
 language: java
 jdk:
-  - oraclejdk8
-install:
-  - mvn --settings .travis/settings.xml clean install -DskipTests=false -Dmaven.javadoc.skip=true -B -V
-before_install:
-  - echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import
-  - echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
-deploy:
-  - 
-    provider: script
-    script: .travis/deploy.sh
-    on:
-      repo: codspire/artifact-lookup-maven-plugin
-      branch: master
-      jdk: oraclejdk8
-  - 
-    provider: script
-    script: .travis/deploy.sh
-    on:
-      repo: codspire/artifact-lookup-maven-plugin
-      tags: true
-      jdk: oraclejdk8
+- oraclejdk8
+env:
+  global:
+sudo: false
+script: mvn clean install
 after_success:
   - mvn -X clean test jacoco:report coveralls:report
