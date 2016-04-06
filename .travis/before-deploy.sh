@@ -1,4 +1,4 @@
-#!/usr/bin/env bash -x
+#!/bin/bash -x
 
 if [ "$TRAVIS_BRANCH" = 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; then    
     

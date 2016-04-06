@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 # Thanks to https://github.com/DracoBlue/http-response-headers/blob/master/.travis/deploy.sh
 # https://github.com/blackdoor/hate/tree/master/cd
