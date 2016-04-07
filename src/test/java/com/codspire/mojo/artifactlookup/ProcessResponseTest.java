@@ -45,7 +45,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class ProcessResponseTest {
 
 	@Mock
-	Log log;
+	protected Log log;
 
 	@Before
 	public void initMock() {

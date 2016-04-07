@@ -68,21 +68,32 @@ public class ProcessResponse {
 	private PropertiesConfiguration plugInConfig;
 	private Log log;
 
-	// private final CloseableHttpClient httpclient =
-	// HttpClients.createDefault();
-
+	/**
+	 * 
+	 */
 	public ProcessResponse() {
 	}
 
+	/**
+	 * 
+	 * @param repository
+	 * @param plugInConfig
+	 * @param log
+	 */
 	public ProcessResponse(String repository, PropertiesConfiguration plugInConfig, Log log) {
 		this.plugInConfig = plugInConfig;
 		this.apiEndpoint = getAPIEndpoint(repository);
 		this.log = log;
 	}
 
-	String getAPIEndpoint(String repository) {
+	/**
+	 * 
+	 * @param repository
+	 * @return
+	 */
+	protected String getAPIEndpoint(String repositoryUrl) {
 		String endpoint = null;
-		repository = cleanupRepositoryURL(repository);
+		String repository = cleanupRepositoryURL(repositoryUrl);
 
 		if (repository.contains(plugInConfig.getString(MAVEN_CENTRAL_REPO_DOMAIN_1)) || repository.contains(plugInConfig.getString(MAVEN_CENTRAL_REPO_DOMAIN_2))) {
 			endpoint = plugInConfig.getString(MAVEN_CENTRAL_REPO_SEARCH_ENDPOINT);
@@ -94,7 +105,12 @@ public class ProcessResponse {
 		return endpoint;
 	}
 
-	String cleanupRepositoryURL(String repository) {
+	/**
+	 * 
+	 * @param repository
+	 * @return
+	 */
+	protected String cleanupRepositoryURL(String repository) {
 		repository = (StringUtils.isNotBlank(repository) ? repository.toLowerCase() : repository);
 
 		if (repository.endsWith("/")) {
@@ -104,6 +120,11 @@ public class ProcessResponse {
 		return repository;
 	}
 
+	/**
+	 * 
+	 * @param sha1Checksum
+	 * @return
+	 */
 	public GAV lookupRepo(String sha1Checksum) {
 
 		// try {
@@ -159,15 +180,22 @@ public class ProcessResponse {
 		return gav;
 	}
 
+	/**
+	 * 
+	 * @param xml
+	 * @return
+	 */
 	public GAV getGAV(String xml) {
 		GAV gav = null;
 		try {
+			String groupId;
+			String artifactId;
+			String version;
 
 			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document document = builder.parse(new InputSource(new StringReader(xml)));
 
 			XPathFactory xPathfactory = XPathFactory.newInstance();
-			String groupId, artifactId, version;
 
 			groupId = getXpathValue(document, xPathfactory, plugInConfig.getString(SONATYPE_GROUP_ID_XPATH));
 
@@ -193,6 +221,13 @@ public class ProcessResponse {
 		return gav;
 	}
 
+	/**
+	 * 
+	 * @param document
+	 * @param xPathfactory
+	 * @param targetXpath
+	 * @return
+	 */
 	private String getXpathValue(Document document, XPathFactory xPathfactory, String targetXpath) {
 		XPath xpath = xPathfactory.newXPath();
 		String xpathValue = null;

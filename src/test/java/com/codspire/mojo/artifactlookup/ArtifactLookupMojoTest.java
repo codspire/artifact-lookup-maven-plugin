@@ -59,9 +59,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class ArtifactLookupMojoTest {
 	@Mock
-	Log log;
+	protected Log log;
 
-	ArtifactLookupMojo artifactLookupMojo = null;
+	private ArtifactLookupMojo artifactLookupMojo = null;
 
 	private static final File ARTIFACT_LOCATION = new File("src/test/resources/jars");
 	private static final File OUTPUT_DIRECTORY = new File("target");
@@ -75,12 +75,7 @@ public class ArtifactLookupMojoTest {
 
 		when(artifactLookupMojo.getLog()).thenReturn(log);
 	}
-	
-//	@After
-//	public void resetMock() {
-//		reset(artifactLookupMojo);
-//	}
-	
+
 	@BeforeClass
 	public static void initBefore() throws Exception {
 		plugInConfig = new PropertiesConfiguration("plugin-config.properties");
@@ -96,7 +91,7 @@ public class ArtifactLookupMojoTest {
 	@Test
 	public void artifactLookupMojoShouldReturnMatchingDependenciesBasedOnRepositoryUrl() throws Exception {
 
-//		ArtifactLookupMojo artifactLookupMojo = new ArtifactLookupMojo();
+		// ArtifactLookupMojo artifactLookupMojo = new ArtifactLookupMojo();
 
 		artifactLookupMojo.artifactLocation = ARTIFACT_LOCATION;
 		artifactLookupMojo.outputDirectory = OUTPUT_DIRECTORY;
@@ -123,7 +118,7 @@ public class ArtifactLookupMojoTest {
 	@Test
 	public void artifactLookupMojoShouldReturnMatchingDependenciesBasedOnArtifactRepository() throws Exception {
 
-//		ArtifactLookupMojo artifactLookupMojo = new ArtifactLookupMojo();
+		// ArtifactLookupMojo artifactLookupMojo = new ArtifactLookupMojo();
 
 		artifactLookupMojo.artifactLocation = ARTIFACT_LOCATION;
 		artifactLookupMojo.outputDirectory = OUTPUT_DIRECTORY;
@@ -138,7 +133,7 @@ public class ArtifactLookupMojoTest {
 	@Test
 	public void artifactLookupMojoShouldReturnMatchingDependenciesBasedOnArtifactRepositoryForSingleFile() throws Exception {
 
-//		ArtifactLookupMojo artifactLookupMojo = new ArtifactLookupMojo();
+		// ArtifactLookupMojo artifactLookupMojo = new ArtifactLookupMojo();
 
 		artifactLookupMojo.artifactLocation = new File(ARTIFACT_LOCATION.getPath() + File.separator + "commons-io.jar");
 		artifactLookupMojo.outputDirectory = OUTPUT_DIRECTORY;
@@ -153,7 +148,7 @@ public class ArtifactLookupMojoTest {
 	@Test(expected = ContextedRuntimeException.class)
 	public void artifactLookupMojoShouldThrowExceptionOnInvalidArtifactLocation() throws MojoExecutionException {
 
-//		ArtifactLookupMojo artifactLookupMojo = new ArtifactLookupMojo();
+		// ArtifactLookupMojo artifactLookupMojo = new ArtifactLookupMojo();
 
 		artifactLookupMojo.artifactLocation = null;
 		artifactLookupMojo.outputDirectory = OUTPUT_DIRECTORY;
@@ -165,7 +160,7 @@ public class ArtifactLookupMojoTest {
 	@Test(expected = ContextedRuntimeException.class)
 	public void artifactLookupMojoShouldThrowExceptionOnInvalidRemoteArtifactRepositories() throws MojoExecutionException {
 
-//		ArtifactLookupMojo artifactLookupMojo = new ArtifactLookupMojo();
+		// ArtifactLookupMojo artifactLookupMojo = new ArtifactLookupMojo();
 
 		artifactLookupMojo.artifactLocation = ARTIFACT_LOCATION;
 		artifactLookupMojo.remoteArtifactRepositories = null;

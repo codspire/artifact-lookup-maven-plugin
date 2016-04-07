@@ -312,7 +312,6 @@
 				</plugins>
 			</build>
 		</profile>
-
 		<profile>
 			<id>build-extras</id>
 			<activation>
@@ -343,6 +342,10 @@
 								<goals>
 									<goal>jar</goal>
 								</goals>
+								<configuration>
+									<failOnError>false</failOnError>
+									<additionalparam>-Xdoclint:none</additionalparam>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>
