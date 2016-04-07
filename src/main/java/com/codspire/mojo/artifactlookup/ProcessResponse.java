@@ -91,9 +91,9 @@ public class ProcessResponse {
 	 * @param repository
 	 * @return
 	 */
-	protected String getAPIEndpoint(String repositoryUrl) {
+	protected String getAPIEndpoint(String origRepository) {
 		String endpoint = null;
-		String repository = cleanupRepositoryURL(repositoryUrl);
+		String repository = cleanupRepositoryURL(origRepository);
 
 		if (repository.contains(plugInConfig.getString(MAVEN_CENTRAL_REPO_DOMAIN_1)) || repository.contains(plugInConfig.getString(MAVEN_CENTRAL_REPO_DOMAIN_2))) {
 			endpoint = plugInConfig.getString(MAVEN_CENTRAL_REPO_SEARCH_ENDPOINT);
@@ -107,11 +107,11 @@ public class ProcessResponse {
 
 	/**
 	 * 
-	 * @param repository
+	 * @param origRepository
 	 * @return
 	 */
-	protected String cleanupRepositoryURL(String repository) {
-		repository = (StringUtils.isNotBlank(repository) ? repository.toLowerCase() : repository);
+	protected String cleanupRepositoryURL(String origRepository) {
+		String repository = (StringUtils.isNotBlank(origRepository) ? origRepository.toLowerCase() : origRepository);
 
 		if (repository.endsWith("/")) {
 			repository = repository.substring(0, repository.length() - 1);

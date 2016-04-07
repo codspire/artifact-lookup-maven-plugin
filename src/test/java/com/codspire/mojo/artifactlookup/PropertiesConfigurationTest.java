@@ -34,7 +34,7 @@ import org.junit.Test;
  */
 public class PropertiesConfigurationTest {
 
-	PropertiesConfiguration config = null;
+	protected PropertiesConfiguration config = null;
 
 	@Before
 	public void initProperty() throws Exception {
@@ -50,6 +50,5 @@ public class PropertiesConfigurationTest {
 	@Test
 	public void testDelimitedProperty() throws Exception {
 		assertThat(config.getStringArray("artifact.file.extensions"), equalTo(new String[] { "jar", "JAR", "zip", "ZIP" }));
-
 	}
 }
