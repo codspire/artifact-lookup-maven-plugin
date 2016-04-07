@@ -49,47 +49,8 @@ import org.apache.maven.plugins.annotations.Parameter;
  * @author Rakesh Nagar
  */
 
-// http://central.sonatype.org/pages/consumers.html
-// blogpost
-// linkedin blog
-// license
-// logging debug/info
-// unit/integration tests
-// code quality and ci
-// http://central.sonatype.org/pages/consumers.html
-// TODO: plug-in help
-// why plug-in? Native maven support, used effective setting to search the, yes
-// we can create a simple script but i wanted something that is maven native,
-// platform independent (bat, sh)
-// artifacts, place nicely
-// md5 feature
-// if you are moving from ant to maven, chances are that you are using some form
-// of local artifacts
-// even if you are using maven but manually installing the artifacts to .m2, you
-// may have the same problem
-// http://choosealicense.com/
-// publish to maven central or nexus oss site
-// site documentaton similar to maven dependency plugin
-// https://oss.sonatype.org/content/groups/public/
-// https://www.javacodegeeks.com/2015/04/there-is-a-mojo-in-my-dojo-how-to-write-a-maven-plugin.html
-// bucket of jars to nice clean dependencies (for external and internal
-// libraries)
-// copyright header
-// javadocs
-// plug-in docs
-// plug-in help
-// fix all TODO and FIXME
-// good documentation https://github.com/jbt/docker
-// add javadocs and javadocs badge
-// use dependency management
-// use maven properties for version
-// http://stackoverflow.com/questions/12026410/maven-plugin-prefix-resolution-doesnt-seem-to-work-as-expected
-// gpg signing
 @Mojo(requiresProject = false, name = "lookup", defaultPhase = LifecyclePhase.NONE)
 public class ArtifactLookupMojo extends AbstractMojo {
-
-	// @Component
-	// private Settings settings;
 
 	/**
 	 * Remote repositories resolved from effective settings. No need to manually
@@ -97,10 +58,6 @@ public class ArtifactLookupMojo extends AbstractMojo {
 	 */
 	@Parameter(readonly = true, required = true, defaultValue = "${project.remoteArtifactRepositories}")
 	protected List<ArtifactRepository> remoteArtifactRepositories;
-
-	// @Parameter(readonly = true, required = true, defaultValue =
-	// "${localRepository}")
-	// protected ArtifactRepository localRepository;
 
 	/**
 	 * Specify the local directory containing the artifacts that need to be
@@ -143,8 +100,9 @@ public class ArtifactLookupMojo extends AbstractMojo {
 	}
 
 	/**
-	 * Searches the local artifacts specified through "artifactLocation" in "remoteArtifactRepositories"
-	 * or "repositoryUrl" and generates the search results.
+	 * Searches the local artifacts specified through "artifactLocation" in
+	 * "remoteArtifactRepositories" or "repositoryUrl" and generates the search
+	 * results.
 	 * 
 	 */
 	protected void lookupArtifacts() {

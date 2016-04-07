@@ -25,11 +25,6 @@ import org.apache.commons.io.IOUtils;
  * under the License.
  */
 
-//http://memorynotfound.com/calculate-file-checksum-java/
-//http://choosealicense.com/
-//TODO: use the implementation from http://omtlab.com/how-to-generate-md5-and-sha1-checksum-in-java/
-//TODO: remove maven build warning
-
 /**
  * 
  *
@@ -50,15 +45,3 @@ public class FileChecksum {
 		return sha1;
 	}
 }
-
-/*
- * enum Hash {
- * 
- * MD5("MD5"), SHA1("SHA1"), SHA256("SHA-256"), SHA512("SHA-512");
- * 
- * private String name;
- * 
- * Hash(String name) { this.name = name; }
- * 
- * public String getName() { return name; } }
- */

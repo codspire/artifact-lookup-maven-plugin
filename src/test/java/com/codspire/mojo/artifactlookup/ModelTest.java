@@ -41,9 +41,13 @@ public class ModelTest {
 	public void gavIsIncompleteShouldReturnCorrectStatus() {
 
 		assertThat((new GAV("", "", "")).isIncomlete(), is(true));
+
 		assertThat((new GAV("g", "a", "")).isIncomlete(), is(true));
+
 		assertThat((new GAV("", "a", "")).isIncomlete(), is(true));
+
 		assertThat((new GAV("", "a", "v")).isIncomlete(), is(true));
+
 		assertThat((new GAV("g", "a", "v")).isIncomlete(), is(false));
 	}
 
@@ -51,9 +55,11 @@ public class ModelTest {
 	public void processingStatusEqualsShouldReturnCorrectStatus() {
 
 		assertThat((new ProcessingStatus(new File("file"), "a")).equals(new ProcessingStatus(new File("file"), "a")), is(true));
+
 		assertThat((new ProcessingStatus(new File("file"), "a")).equals(new ProcessingStatus(new File("file2"), "a")), is(false));
+
 		assertThat((new ProcessingStatus(new File("file"), "a")).equals(new ProcessingStatus(new File("file"), "b")), is(false));
-		
+
 		assertThat((new ProcessingStatus(new File("file"), "a")).equals(new Object()), is(false));
 	}
 

@@ -127,7 +127,6 @@ public class ProcessResponse {
 	 */
 	public GAV lookupRepo(String sha1Checksum) {
 
-		// try {
 		String url = apiEndpoint + sha1Checksum;
 		log.info("Request URL: " + url);
 		HttpGet httpGet = new HttpGet(url);

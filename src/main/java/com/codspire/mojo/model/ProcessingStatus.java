@@ -43,17 +43,9 @@ public class ProcessingStatus {
 		return artifact;
 	}
 
-//	public void setArtifact(File artifact) {
-//		this.artifact = artifact;
-//	}
-
 	public String getSha1() {
 		return sha1;
 	}
-
-//	public void setSha1(String sha1) {
-//		this.sha1 = sha1;
-//	}
 
 	public String getArtifactRepository() {
 		return artifactRepository;
@@ -90,9 +82,6 @@ public class ProcessingStatus {
 	public void setStatusMessage(String statusMessage) {
 		this.statusMessage = statusMessage;
 	}
-
-//	public ProcessingStatus() {
-//	}
 
 	public ProcessingStatus(File artifact, String sha1) {
 		super();

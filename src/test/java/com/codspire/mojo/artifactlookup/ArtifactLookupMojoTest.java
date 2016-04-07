@@ -47,9 +47,6 @@ import org.mockito.runners.MockitoJUnitRunner;
  * under the License.
  */
 
-//http://maven.apache.org/plugin-testing/maven-plugin-testing-harness/getting-started/index.html
-//http://stackoverflow.com/questions/15779351/component-lookup-exception-with-org-apache-maven-repository-repositorysystem-in
-
 /**
  * 
  *
@@ -91,8 +88,6 @@ public class ArtifactLookupMojoTest {
 	@Test
 	public void artifactLookupMojoShouldReturnMatchingDependenciesBasedOnRepositoryUrl() throws Exception {
 
-		// ArtifactLookupMojo artifactLookupMojo = new ArtifactLookupMojo();
-
 		artifactLookupMojo.artifactLocation = ARTIFACT_LOCATION;
 		artifactLookupMojo.outputDirectory = OUTPUT_DIRECTORY;
 		artifactLookupMojo.repositoryUrl = "https://oss.sonatype.org/content/groups/public/";
@@ -118,8 +113,6 @@ public class ArtifactLookupMojoTest {
 	@Test
 	public void artifactLookupMojoShouldReturnMatchingDependenciesBasedOnArtifactRepository() throws Exception {
 
-		// ArtifactLookupMojo artifactLookupMojo = new ArtifactLookupMojo();
-
 		artifactLookupMojo.artifactLocation = ARTIFACT_LOCATION;
 		artifactLookupMojo.outputDirectory = OUTPUT_DIRECTORY;
 		artifactLookupMojo.remoteArtifactRepositories = getArtifactRepositories();
@@ -132,8 +125,6 @@ public class ArtifactLookupMojoTest {
 
 	@Test
 	public void artifactLookupMojoShouldReturnMatchingDependenciesBasedOnArtifactRepositoryForSingleFile() throws Exception {
-
-		// ArtifactLookupMojo artifactLookupMojo = new ArtifactLookupMojo();
 
 		artifactLookupMojo.artifactLocation = new File(ARTIFACT_LOCATION.getPath() + File.separator + "commons-io.jar");
 		artifactLookupMojo.outputDirectory = OUTPUT_DIRECTORY;
@@ -148,8 +139,6 @@ public class ArtifactLookupMojoTest {
 	@Test(expected = ContextedRuntimeException.class)
 	public void artifactLookupMojoShouldThrowExceptionOnInvalidArtifactLocation() throws MojoExecutionException {
 
-		// ArtifactLookupMojo artifactLookupMojo = new ArtifactLookupMojo();
-
 		artifactLookupMojo.artifactLocation = null;
 		artifactLookupMojo.outputDirectory = OUTPUT_DIRECTORY;
 		artifactLookupMojo.repositoryUrl = "https://oss.sonatype.org/content/groups/public/";
@@ -159,8 +148,6 @@ public class ArtifactLookupMojoTest {
 
 	@Test(expected = ContextedRuntimeException.class)
 	public void artifactLookupMojoShouldThrowExceptionOnInvalidRemoteArtifactRepositories() throws MojoExecutionException {
-
-		// ArtifactLookupMojo artifactLookupMojo = new ArtifactLookupMojo();
 
 		artifactLookupMojo.artifactLocation = ARTIFACT_LOCATION;
 		artifactLookupMojo.remoteArtifactRepositories = null;

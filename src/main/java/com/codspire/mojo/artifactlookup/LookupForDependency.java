@@ -1,5 +1,7 @@
 package com.codspire.mojo.artifactlookup;
 
+import static com.codspire.mojo.utils.FileChecksum.generateSHA1Checksum;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,8 +16,6 @@ import org.apache.maven.plugin.logging.Log;
 
 import com.codspire.mojo.model.GAV;
 import com.codspire.mojo.model.ProcessingStatus;
-
-import static com.codspire.mojo.utils.FileChecksum.generateSHA1Checksum;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -35,17 +35,6 @@ import static com.codspire.mojo.utils.FileChecksum.generateSHA1Checksum;
  * specific language governing permissions and limitations
  * under the License.
  */
-
-//http://www.vineetmanohar.com/2009/11/3-ways-to-run-java-main-from-maven/
-//http://stackoverflow.com/questions/3063215/finding-the-right-version-of-the-right-jar-in-a-maven-repository
-//http://stackoverflow.com/questions/25047781/how-do-i-retrieve-an-artifact-checksum-from-nexus-using-their-rest-api-via-curl
-
-//java -jar target/nexus-lookup-spring-boot.jar "C:\Users\rnagar\Downloads\dependency-lookup" "https://oss.sonatype.org"
-//java -jar target/nexus-lookup-spring-boot.jar "C:\Users\rnagar\Downloads\dependency-lookup" "http://search.maven.org"
-
-//TODO: implement proxy
-//TODO: unit tests
-//TODO: traverci, git
 
 /**
  * 

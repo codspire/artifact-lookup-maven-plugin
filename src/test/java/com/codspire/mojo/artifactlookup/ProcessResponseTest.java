@@ -32,9 +32,6 @@ import org.mockito.runners.MockitoJUnitRunner;
  * under the License.
  */
 
-//mojo test example
-//https://github.com/spotify/docker-maven-plugin/blob/master/src/test/java/com/spotify/docker/BuildMojoTest.java
-
 /**
  * 
  *
@@ -46,21 +43,27 @@ public class ProcessResponseTest {
 
 	@Mock
 	protected Log log;
+	
+	private PropertiesConfiguration plugInConfig;
 
 	@Before
-	public void initMock() {
+	public void initMock() throws Exception {
 		when(log.isDebugEnabled()).thenReturn(Boolean.TRUE);
+		
+		plugInConfig = new PropertiesConfiguration("plugin-config.properties");
 	}
 
 	@Test
 	public void cleanupRepositoryURLShouldConvertToLowerCase() {
 		ProcessResponse processResponse = new ProcessResponse();
+		
 		assertThat(processResponse.cleanupRepositoryURL("https://HelloWorld.Com"), equalTo("https://helloworld.com"));
 	}
 
 	@Test
 	public void cleanupRepositoryURLShouldRemoveLastSlash() {
 		ProcessResponse processResponse = new ProcessResponse();
+		
 		assertThat(processResponse.cleanupRepositoryURL("https://HelloWorld.Com/"), equalTo("https://helloworld.com"));
 
 		assertThat(processResponse.cleanupRepositoryURL("https://HelloWorld.Com"), equalTo("https://helloworld.com"));
@@ -68,8 +71,7 @@ public class ProcessResponseTest {
 
 	@Test
 	public void getAPIEndpointShouldReturnTheAPIEndpointBasedOnRepoUrl() throws Exception {
-
-		PropertiesConfiguration plugInConfig = new PropertiesConfiguration("plugin-config.properties");
+		
 		String repository = "http://repo.maven.apache.org/maven2";
 		ProcessResponse processResponse = new ProcessResponse(repository, plugInConfig, log);
 
@@ -99,7 +101,7 @@ public class ProcessResponseTest {
 
 	@Test(expected = ContextedRuntimeException.class)
 	public void getAPIEndpointShouldThrowExceptionForInvalidNexusRepository() throws Exception {
-		PropertiesConfiguration plugInConfig = new PropertiesConfiguration("plugin-config.properties");
+		
 		/* not a valid maven repository */
 		String repository = "http://junk-maven-repo.com";
 		ProcessResponse processResponse = new ProcessResponse(repository, plugInConfig, log);
