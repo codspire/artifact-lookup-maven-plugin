@@ -23,6 +23,8 @@ This plugin follows a minimalistic approach. Available options are:
 ``` sh
 $ git clone https://github.com/codspire/artifact-lookup-maven-plugin.git
 
+$ cd artifact-lookup-maven-plugin
+
 $ mvn install
 ```
 
