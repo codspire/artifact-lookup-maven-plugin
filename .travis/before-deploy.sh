@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 if [ "$TRAVIS_BRANCH" = 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; then    
     
@@ -9,5 +9,5 @@ if [ "$TRAVIS_BRANCH" = 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; the
 	ls -ltr .travis/*
     	
     	# --yes for disabling the prompt
-	gpg -v --yes --fast-import .travis/codesigning.asc
+	gpg -v --yes --batch --fast-import .travis/codesigning.asc
 fi
