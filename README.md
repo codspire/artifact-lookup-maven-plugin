@@ -20,7 +20,7 @@ This plugin follows a minimalistic approach. Available options are:
 * **`repositoryUrl`**: resolve all qualified jars (based on other parameters) from the specified remote repositories. Supports csv format to specify multiple repositories.
 
 ## Build & Installation (if you don't have direct access to `Maven Central`)
-``` sh
+```
 $ git clone https://github.com/codspire/artifact-lookup-maven-plugin.git
 
 $ cd artifact-lookup-maven-plugin
