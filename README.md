@@ -8,23 +8,25 @@ This "Artifact Lookup Maven Plugin" acts as a Maven command line utility that ca
 # Motivation
 Ability to search a remote Maven repository by `jar or directory` could be quite beneficial, specially for legacy Java projects that are migrating to Maven. Such migration often involves the daunting task of locating the existing project dependencies in the remote Maven repositories which could take several days or weeks based on the size and complexity of the project. This activity becomes even harder and error prone if the jar files are scattered across many directories/sub-directories and their naming is not alignd to version based naming convention (e.g. `httpclient.jar` as against `httpclient-4.5.2.jar`). 
 
-## Installation
-``` sh
-$ git clone https://github.com/codspire/artifact-lookup-maven-plugin.git
-```
-``` sh
-$ mvn install
-```
-
 ## Usage
 ``` sh
 $ mvn com.codspire.plugins:artifact-lookup-maven-plugin:lookup
 ```
 
+### Usage Options
 This plugin follows a minimalistic approach. Available options are:
 * **`-no parameters-`**: resolve all jars that exist in the current directory and sub-directories from default remote repositories.
 * **`artifactLocation`**: if its a file path; resolve specified file from default remote repositories. If its a directory; resolve all jars that exist in the specified directory and sub-directories from default remote repositories.
 * **`repositoryUrl`**: resolve all qualified jars (based on other parameters) from the specified remote repositories. Supports csv format to specify multiple repositories.
+
+If you do not have direct access to `Maven Central` repository, you can locally build and install this plugin
+
+## Build & Installation
+``` sh
+$ git clone https://github.com/codspire/artifact-lookup-maven-plugin.git
+
+$ mvn install
+```
 
 ## Key Points
 * Arfifacts are searched based on `SHA1` checksum of the file.
