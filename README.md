@@ -19,9 +19,7 @@ This plugin follows a minimalistic approach. Available options are:
 * **`artifactLocation`**: if its a file path; resolve specified file from default remote repositories. If its a directory; resolve all jars that exist in the specified directory and sub-directories from default remote repositories.
 * **`repositoryUrl`**: resolve all qualified jars (based on other parameters) from the specified remote repositories. Supports csv format to specify multiple repositories.
 
-If you do not have direct access to `Maven Central` repository, you can locally build and install this plugin
-
-## Build & Installation
+## Build & Installation (if you don't have direct access to `Maven Central`)
 ``` sh
 $ git clone https://github.com/codspire/artifact-lookup-maven-plugin.git
 
@@ -33,7 +31,7 @@ $ mvn install
 * Default Maven remote repositories are determined based on user's effective Maven `settings.xml` file. 
 * If there are more than one remote repository, the jars are sequentially searched against all repositories until the match is found.
 
-## Examples
+## Usage Examples
 
 ### Example 1: Search all jars in a folder in default remote repository
 cd to the folder that contains jar files
