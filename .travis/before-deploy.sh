@@ -7,6 +7,7 @@ if [ "$TRAVIS_BRANCH" = 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; the
 	openssl aes-256-cbc -K $encrypted_6415f14baeb5_key -iv $encrypted_6415f14baeb5_iv -in .travis/codesigning.asc.enc -out .travis/codesigning.asc -d      
   
 	ls -ltr .travis/*
-    
-	gpg -v --fast-import .travis/codesigning.asc
+    	
+    	# --yes for disabling the prompt
+	gpg -v --yes --fast-import .travis/codesigning.asc
 fi
