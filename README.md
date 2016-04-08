@@ -6,7 +6,7 @@ This "Artifact Lookup Maven Plugin" acts as a Maven command line utility that ca
 ![Artifact Lookup Maven Plugin Info](https://raw.githubusercontent.com/codspire/artifact-lookup-maven-plugin/master/src/main/resources/artifact-lookup-maven-plugin-info.png)
 
 # Motivation
-Ability to search a remote Maven repository by `jar or directory` could be quite beneficial, specially for legacy Java projects that are migrating to Maven. Such migration often involves the daunting task of locating the existing project dependencies in the remote Maven repositories which could take several days or weeks based on the size and complexity of the project. This activity becomes even harder and error prone if the jar files are scattered across many directories/sub-directories and their naming is not alignd to version based naming convention (e.g. `httpclient.jar` as against `httpclient-4.5.2.jar`). 
+Ability to search a remote Maven repository by `jar or directory` could be quite beneficial, specially for legacy Java projects that are migrating to Maven. Such migration often involves the daunting task of locating the existing project dependencies in the remote Maven repositories which could take several days or weeks based on the size and complexity of the project. This activity becomes even harder and error prone if the jar files are scattered across many directories/sub-directories and their naming is not alignd to [version based naming convention](http://semver.org) (e.g. `httpclient.jar` as against `httpclient-4.5.2.jar`). 
 
 ## Usage
 ``` sh
