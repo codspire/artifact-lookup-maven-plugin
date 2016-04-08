@@ -29,7 +29,7 @@ $ mvn install
 ```
 
 ## Key Points
-* Arfifacts are searched based on `SHA1` checksum of the file.
+* Artifacts are searched based on `SHA1` checksum of the file.
 * Default Maven remote repositories are determined based on user's effective Maven `settings.xml` file. 
 * If there are more than one remote repository, the jars are sequentially searched against all repositories until the match is found.
 
