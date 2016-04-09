@@ -105,7 +105,9 @@ public class LookupForDependency {
 		for (String artifactRepository : remoteArtifactRepositoriesURL) {
 
 			if (CollectionUtils.isNotEmpty(this.notFoundList)) {
+				log.info("------------------------------------------------------------------------");
 				log.info("*********** Checking against ==> " + artifactRepository);
+				log.info("------------------------------------------------------------------------");
 
 				List<ProcessingStatus> tempNotFoundList = new ArrayList<ProcessingStatus>();
 				tempNotFoundList.addAll(this.notFoundList);
