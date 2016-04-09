@@ -38,7 +38,7 @@ public class PropertiesConfigurationTest {
 
 	@Before
 	public void initProperty() throws Exception {
-		config = new PropertiesConfiguration("plugin-config.properties");
+		config = new PropertiesConfiguration("artifact-lookup-maven-plugin.properties");
 		config.setListDelimiter(',');
 	}
 

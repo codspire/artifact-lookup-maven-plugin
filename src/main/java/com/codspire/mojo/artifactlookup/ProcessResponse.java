@@ -147,8 +147,7 @@ public class ProcessResponse {
 
 		String responseBody = null;
 		GAV gav;
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		try {
+		try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
 			responseBody = httpclient.execute(httpGet, responseHandler);
 
 			if (log.isDebugEnabled()) {
@@ -165,11 +164,6 @@ public class ProcessResponse {
 
 		} catch (Exception e) {
 			throw new ContextedRuntimeException("Unable to get the http response: " + url, e);
-		} finally {
-			try {
-				httpclient.close();
-			} catch (Exception e) {
-			}
 		}
 
 		if (gav == null || gav.isIncomlete()) {

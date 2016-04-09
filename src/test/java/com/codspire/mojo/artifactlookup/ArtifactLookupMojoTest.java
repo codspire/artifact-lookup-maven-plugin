@@ -2,8 +2,8 @@ package com.codspire.mojo.artifactlookup;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-//mojo test example
-//https://github.com/spotify/docker-maven-plugin/blob/master/src/test/java/com/spotify/docker/BuildMojoTest.java
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -23,9 +23,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-
-import static org.mockito.Mockito.*;
-
 import org.mockito.runners.MockitoJUnitRunner;
 
 /*
@@ -75,7 +72,7 @@ public class ArtifactLookupMojoTest {
 
 	@BeforeClass
 	public static void initBefore() throws Exception {
-		plugInConfig = new PropertiesConfiguration("plugin-config.properties");
+		plugInConfig = new PropertiesConfiguration("artifact-lookup-maven-plugin.properties");
 	}
 
 	@After
@@ -121,6 +118,20 @@ public class ArtifactLookupMojoTest {
 
 		assertThat("The files differ!", getGeneratedFileContent("default.dependency.filename"), equalTo(getExpectedFileContent("expected-pom-dependencies-2.xml")));
 		assertThat("The files differ!", replace(getGeneratedFileContent("default.lookup.status.filename"), "\\", "/"), equalTo(getExpectedFileContent("extected-dependency-status-2.csv")));
+	}
+
+	@Test
+	public void artifactLookupMojoShouldReturnMatchingDependenciesRecursivelyBasedOnArtifactRepository() throws Exception {
+
+		artifactLookupMojo.artifactLocation = ARTIFACT_LOCATION;
+		artifactLookupMojo.recursive = true;
+		artifactLookupMojo.outputDirectory = OUTPUT_DIRECTORY;
+		artifactLookupMojo.remoteArtifactRepositories = getArtifactRepositories();
+
+		artifactLookupMojo.execute();
+
+		assertThat("The files differ!", getGeneratedFileContent("default.dependency.filename"), equalTo(getExpectedFileContent("expected-pom-dependencies-4.xml")));
+		assertThat("The files differ!", replace(getGeneratedFileContent("default.lookup.status.filename"), "\\", "/"), equalTo(getExpectedFileContent("extected-dependency-status-4.csv")));
 	}
 
 	@Test
@@ -170,5 +181,4 @@ public class ArtifactLookupMojoTest {
 
 		return artifactRepositories;
 	}
-
 }

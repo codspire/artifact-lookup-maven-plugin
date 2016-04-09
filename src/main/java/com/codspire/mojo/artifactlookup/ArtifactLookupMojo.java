@@ -73,6 +73,14 @@ public class ArtifactLookupMojo extends AbstractMojo {
 	protected File artifactLocation;
 
 	/**
+	 * Look for sub directories for looking for artifacts, used only if
+	 * "artifactLocation" is a directory.
+	 * 
+	 */
+	@Parameter(readonly = false, required = false, property = "recursive", defaultValue = "true")
+	protected boolean recursive;
+
+	/**
 	 * Optional property to specify remote Maven repository Url(s) if you want
 	 * to search the artifacts in a repositories not configured in your
 	 * settings.xml (This will supersede the remote repositories configured in
@@ -120,7 +128,7 @@ public class ArtifactLookupMojo extends AbstractMojo {
 			log.debug((remoteArtifactRepositories != null) ? remoteArtifactRepositories.toString() : "remoteArtifactRepositories is null");
 		}
 
-		LookupForDependency lookupForDependency = new LookupForDependency(artifactLocation, remoteArtifactRepositoriesURL, outputDirectory, log);
+		LookupForDependency lookupForDependency = new LookupForDependency(artifactLocation, recursive, remoteArtifactRepositoriesURL, outputDirectory, log);
 		lookupForDependency.process();
 	}
 

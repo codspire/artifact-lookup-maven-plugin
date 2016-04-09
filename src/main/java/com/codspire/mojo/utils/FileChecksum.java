@@ -3,8 +3,7 @@ package com.codspire.mojo.utils;
 import java.io.File;
 import java.io.FileInputStream;
 
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.io.IOUtils;
+import static org.apache.commons.codec.digest.DigestUtils.sha1Hex;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -34,14 +33,8 @@ import org.apache.commons.io.IOUtils;
 public class FileChecksum {
 
 	public static String generateSHA1Checksum(File file) throws Exception {
-		FileInputStream fis = null;
-		String sha1 = null;
-		try {
-			fis = new FileInputStream(file);
-			sha1 = DigestUtils.sha1Hex(fis);
-		} finally {
-			IOUtils.closeQuietly(fis);
+		try (FileInputStream fis = new FileInputStream(file)) {
+			return sha1Hex(fis);
 		}
-		return sha1;
 	}
 }

@@ -15,10 +15,13 @@ $ mvn com.codspire.plugins:artifact-lookup-maven-plugin:lookup
 
 ### Usage Options
 This plugin follows a minimalistic approach. Available options are:
-* **`-no parameters-`**: resolve all jars that exist in the current directory and sub-directories from default remote repositories.
-* **`artifactLocation`**: if its a file path; resolve specified file from default remote repositories. If its a directory; resolve all jars that exist in the specified directory and sub-directories from default remote repositories.
-* **`repositoryUrl`**: resolve all qualified jars (based on other parameters) from the specified remote repositories. Supports csv format to specify multiple repositories.
 
+| Name 	| Type 	| Description 	|
+|------------------	|---------	|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
+| -no parameters- 	| N/A 	| Searches all jar/zip files that exist in the current directory and sub-directories in remote Maven repositories based on user's effective `settings.xml` 	|
+| artifactLocation 	| String 	| Local system path where artifacts are present. It could be path to specific jar/zip file or a directory. If a directory path is specified, all jar/zip files in that directory and sub-directories will be searched in the remote Maven repositories. **Default value is:** current directory from where the plugin is executed. 	|
+| recursive 	| boolean 	| Flag to specify if the artifacts from sub-directories need to be searched.  **Default value is:** true. 	|
+| repositoryUrl 	| String 	| Resolve all qualified jar/zip files (based on other parameters) from the specified remote repositories. Supports csv format to specify multiple repositories. 	|
 ## Build & Installation (if you don't have direct access to `Maven Central`)
 ```
 $ git clone https://github.com/codspire/artifact-lookup-maven-plugin.git

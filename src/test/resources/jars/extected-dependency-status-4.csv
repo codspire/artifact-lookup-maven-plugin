@@ -1,0 +1,4 @@
+File,SHA1,Status,GroupId,ArtifactId,Version,ArtifactRepository
+src/test/resources/jars/formatter-java.jar,fdbcf18a77ccf1e156412bca7cfeeca0ac7fc496,Found,cool.arch.infrastructure,formatter-java,1.0.1,https://oss.sonatype.org/content/groups/public/
+src/test/resources/jars/commons-io.jar,b1b6ea3b7e4aa4f492509a4952029cd8e48019ad,Found,commons-io,commons-io,2.4,https://repo.maven.apache.org/maven2/
+src/test/resources/jars/sub-dir/commons-http.jar,f0c2b808927a6e6f611807f3f519bcc632ae873a,Found,commons-http,commons-http,1.1,https://repo.maven.apache.org/maven2/

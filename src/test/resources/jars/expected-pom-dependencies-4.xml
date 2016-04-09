@@ -1,0 +1,21 @@
+
+<dependencies>
+	<!-- Resolved from https://oss.sonatype.org/content/groups/public/ -->
+	<dependency>
+		<groupId>cool.arch.infrastructure</groupId>
+		<artifactId>formatter-java</artifactId>
+		<version>1.0.1</version>
+	</dependency>
+	<!-- Resolved from https://repo.maven.apache.org/maven2/ -->
+	<dependency>
+		<groupId>commons-io</groupId>
+		<artifactId>commons-io</artifactId>
+		<version>2.4</version>
+	</dependency>
+	<!-- Resolved from https://repo.maven.apache.org/maven2/ -->
+	<dependency>
+		<groupId>commons-http</groupId>
+		<artifactId>commons-http</artifactId>
+		<version>1.1</version>
+	</dependency>
+</dependencies>

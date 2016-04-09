@@ -54,35 +54,40 @@ public class LookupForDependency {
 	private File outputDirectory;
 	private Log log;
 
-	public LookupForDependency(File artifactLocation, List<String> remoteArtifactRepositoriesURL, File outputDirectory, Log log) {
+	public LookupForDependency(File artifactLocation, boolean recursive, List<String> remoteArtifactRepositoriesURL, File outputDirectory, Log log) {
 
 		try {
-			this.plugInConfig = new PropertiesConfiguration("plugin-config.properties");
+			this.plugInConfig = new PropertiesConfiguration("artifact-lookup-maven-plugin.properties");
 			this.plugInConfig.setListDelimiter(',');
 		} catch (ConfigurationException e) {
-			throw new ContextedRuntimeException("Unable to load plugin-config.properties", e);
+			throw new ContextedRuntimeException("Unable to load artifact-lookup-maven-plugin.properties", e);
 		}
 
+		this.log = log;
 		this.outputDirectory = outputDirectory;
 		this.remoteArtifactRepositoriesURL = remoteArtifactRepositoriesURL;
-		this.notFoundList = loadArtifacts(artifactLocation);
+		this.notFoundList = loadArtifacts(artifactLocation, recursive);
 		this.foundList = new ArrayList<ProcessingStatus>();
-		this.log = log;
 	}
 
-	private List<ProcessingStatus> loadArtifacts(File fileOrFolder) {
+	private List<ProcessingStatus> loadArtifacts(File fileOrFolder, boolean recursive) {
+		if (log.isDebugEnabled()) {
+			log.debug("Artifact Location: " + fileOrFolder + " Find recursive = " + recursive);
+		}
+
 		List<ProcessingStatus> artifactsDetails = new ArrayList<ProcessingStatus>();
 
 		if (fileOrFolder.isFile()) {
 			artifactsDetails.add(new ProcessingStatus(fileOrFolder, getChecksumForFile(fileOrFolder)));
 		} else {
-			Iterator<File> iterateFiles = FileUtils.iterateFiles(fileOrFolder, plugInConfig.getStringArray(ARTIFACT_FILE_EXTENSIONS), true);
+			Iterator<File> iterateFiles = FileUtils.iterateFiles(fileOrFolder, plugInConfig.getStringArray(ARTIFACT_FILE_EXTENSIONS), recursive);
 
 			while (iterateFiles.hasNext()) {
 				File file = iterateFiles.next();
 				artifactsDetails.add(new ProcessingStatus(file, getChecksumForFile(file)));
 			}
 		}
+
 		return artifactsDetails;
 	}
 
@@ -127,13 +132,11 @@ public class LookupForDependency {
 						processingStatus.markError();
 						processingStatus.setStatusMessage("WARN: " + processingStatus.getArtifact().getAbsolutePath() + " could not be resolved. " + e.getMessage());
 						log.warn(processingStatus.getStatusMessage());
-						// System.err.println(processingStatus.getStatusMessage());
 					}
 
 					log.info("Not Found Count = " + this.notFoundList.size());
 					log.info("Found Count = " + this.foundList.size());
 				}
-
 			}
 		}
 		writePOMDependencies();
@@ -180,11 +183,10 @@ public class LookupForDependency {
 			GAV gav = processingStatus.getGav();
 
 			if (!processingStatus.isError() && gav != null) {
-
-				statusCSV.append(processingStatus.getArtifact().getPath() + "," + processingStatus.getSha1() + "," + (processingStatus.isError() ? "Not Found" : "Found") + "," + gav.getGroupId()
-						+ "," + gav.getArtifactId() + "," + gav.getVersion() + "," + processingStatus.getArtifactRepository() + "\n");
+				statusCSV.append(processingStatus.getArtifact().getPath() + "," + processingStatus.getSha1() + "," + "Found" + "," + gav.getGroupId() + "," + gav.getArtifactId() + ","
+						+ gav.getVersion() + "," + processingStatus.getArtifactRepository() + "\n");
 			} else {
-				statusCSV.append(processingStatus.getArtifact().getPath() + "," + processingStatus.getSha1() + "," + (processingStatus.isError() ? "Not Found" : "Found") + ",,,," + "\n");
+				statusCSV.append(processingStatus.getArtifact().getPath() + "," + processingStatus.getSha1() + "," + "Not Found" + ",,,," + "\n");
 			}
 		}
 

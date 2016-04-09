@@ -50,7 +50,7 @@ public class ProcessResponseTest {
 	public void initMock() throws Exception {
 		when(log.isDebugEnabled()).thenReturn(Boolean.TRUE);
 		
-		plugInConfig = new PropertiesConfiguration("plugin-config.properties");
+		plugInConfig = new PropertiesConfiguration("artifact-lookup-maven-plugin.properties");
 	}
 
 	@Test
@@ -60,6 +60,13 @@ public class ProcessResponseTest {
 		assertThat(processResponse.cleanupRepositoryURL("https://HelloWorld.Com"), equalTo("https://helloworld.com"));
 	}
 
+	@Test
+	public void cleanupRepositoryURLShouldBlankForBlankURL() {
+		ProcessResponse processResponse = new ProcessResponse();
+		
+		assertThat(processResponse.cleanupRepositoryURL(" "), equalTo(" "));
+	}
+	
 	@Test
 	public void cleanupRepositoryURLShouldRemoveLastSlash() {
 		ProcessResponse processResponse = new ProcessResponse();
@@ -74,28 +81,30 @@ public class ProcessResponseTest {
 		
 		String repository = "http://repo.maven.apache.org/maven2";
 		ProcessResponse processResponse = new ProcessResponse(repository, plugInConfig, log);
-
 		assertThat(processResponse.getAPIEndpoint(repository), equalTo(plugInConfig.getString("maven.central.repo.search.endpoint")));
 
 		repository = "https://repo.maven.apache.org/maven2/";
-
 		processResponse = new ProcessResponse(repository, plugInConfig, log);
-
 		assertThat(processResponse.getAPIEndpoint(repository), equalTo(plugInConfig.getString("maven.central.repo.search.endpoint")));
 
+		repository = "http://repo1.maven.org/maven2/";
+		processResponse = new ProcessResponse(repository, plugInConfig, log);
+		assertThat(processResponse.getAPIEndpoint(repository), equalTo(plugInConfig.getString("maven.central.repo.search.endpoint")));
+		
+		repository = "https://repo1.maven.org/maven2/";
+		processResponse = new ProcessResponse(repository, plugInConfig, log);
+		assertThat(processResponse.getAPIEndpoint(repository), equalTo(plugInConfig.getString("maven.central.repo.search.endpoint")));		
+		
 		repository = "https://repository.jboss.org/nexus/content/groups/public/";
 		processResponse = new ProcessResponse(repository, plugInConfig, log);
-
 		assertThat(processResponse.getAPIEndpoint(repository), equalTo("https://repository.jboss.org/nexus/service/local/lucene/search?sha1="));
 
 		repository = "https://repository.jboss.org/nexus/content/groups/public/";
 		processResponse = new ProcessResponse(repository, plugInConfig, log);
-
 		assertThat(processResponse.getAPIEndpoint(repository), equalTo("https://repository.jboss.org/nexus/service/local/lucene/search?sha1="));
 
 		repository = "https://oss.sonatype.org/content/groups/public/";
 		processResponse = new ProcessResponse(repository, plugInConfig, log);
-
 		assertThat(processResponse.getAPIEndpoint(repository), equalTo("https://oss.sonatype.org/service/local/lucene/search?sha1="));
 	}
 

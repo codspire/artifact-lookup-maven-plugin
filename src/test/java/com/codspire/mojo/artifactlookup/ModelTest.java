@@ -43,6 +43,8 @@ public class ModelTest {
 		assertThat((new GAV("", "", "")).isIncomlete(), is(true));
 
 		assertThat((new GAV("g", "a", "")).isIncomlete(), is(true));
+		
+		assertThat((new GAV("g", " ", "")).isIncomlete(), is(true));
 
 		assertThat((new GAV("", "a", "")).isIncomlete(), is(true));
 
