@@ -39,7 +39,8 @@ $ mvn install
 ## Usage Examples
 
 ### Example 1: Search all jars in a folder in default remote repository
-cd to the folder that contains jar files
+cd to the folder that contains jar files; suppose the folder contains below jars that you'd like to search in the remote Maven repository.
+
 ``` sh
 $ ls
 activation.jar  commons-io.jar  junit.jar
