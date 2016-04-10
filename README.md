@@ -154,6 +154,8 @@ $ mvn com.codspire.plugins:artifact-lookup-maven-plugin:lookup \
 * Privately hosted Sonatype Nexus repository
 
 ## Author
+[![Rakesh Nagar](https://avatars.githubusercontent.com/u/17919946?s=60)](https://github.com/codspire)
+
 [Rakesh Nagar](https://github.com/codspire)
 
 ## Licence
