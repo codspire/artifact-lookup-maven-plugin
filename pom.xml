@@ -132,7 +132,7 @@
 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpcore</artifactId>
-				<version>4.4.4</version>
+				<version>4.4.5</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-codec</groupId>
@@ -208,7 +208,7 @@
 				<plugin>
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.7.6.201602180812</version>
+					<version>0.7.7.201606060606</version>
 					<configuration>
 						<excludes>
 							<exclude>**/HelpMojo.class</exclude>
@@ -282,7 +282,7 @@
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-javadoc-plugin</artifactId>
-							<version>2.10.3</version>
+							<version>2.10.4</version>
 							<executions>
 								<execution>
 									<id>attach-javadocs</id>
