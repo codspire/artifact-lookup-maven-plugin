@@ -136,7 +136,7 @@
 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpcore</artifactId>
-				<version>4.4.5</version>
+				<version>4.4.6</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-codec</groupId>
@@ -212,7 +212,7 @@
 				<plugin>
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.7.7.201606060606</version>
+					<version>0.7.8</version>
 					<configuration>
 						<excludes>
 							<exclude>**/HelpMojo.class</exclude>
